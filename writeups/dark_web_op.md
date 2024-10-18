@@ -63,6 +63,7 @@ It is clear from the challenge that we will navigate to the .onion site. Hence, 
 For this capstone, I have used Tor Browser and ProtonVPN. You may choose the VPN of your choice.
 
 Download Tor Browser from [here](https://www.torproject.org/download/)
+
 Download ProtonVPN from [here](https://protonvpn.com/)
 
 ## Solution
@@ -83,4 +84,13 @@ On this webpage, click on the "GO TO THE CHALLENGE" button. This will lead to a 
 
 Based on the questions in the requested info, it is clear that we need to find a function for the console, that will generate login credentials for this website.
 
-Right-click anywhere on the page and click Inspect. This will open up a console. You will see various tabs that you can navigate to. Click on the Debugger tab. In this tab, we can search for any keyword across all the loaded scripts.
+Right-click anywhere on the page and click Inspect. This will open a console. You will see various tabs that you can navigate to. Click on the Debugger tab. We can search for any keyword across all the loaded scripts in this tab.
+
+If I were to write a function to generate user credentials, I would name it something like generateUserCredentials() or createUserCredentials(). Hence, I searched for the keyword "credential" and I found the required function name, as shown in the image below.
+
+![Function Name Found](../images/dark_web_op_sbt/found_function.png)
+
+The name of the function is `generateUserCredentials()`. This answers our first question.
+
+Now go back to the console, type in the function, and hit enter. This will give you a _Base64 encoded string_. We need to decode this string.
+
