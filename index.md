@@ -7,11 +7,11 @@ Welcome to my portfolio website!
 I am Nisarg Dave. I am a Rochester Institute of Technology graduate pursuing an MS in Cybersecurity. My professional interests include application security, network security, and incident response. Here, I will share my writeups and walkthroughs for the challenges I do to demonstrate my skills as a cybersecurity professional.
 
 Connect with me on [LinkedIn](https://www.linkedin.com/in/nisargdave7324/).
-[Access my Resume](https://docs.google.com/document/d/1fKf0opZz1XZcIg2tymXtIaCDrS_91zek542ybPqB3aA/edit)
+[View my Resume](https://docs.google.com/document/d/1fKf0opZz1XZcIg2tymXtIaCDrS_91zek542ybPqB3aA/edit)
 
 # Writeups and Walkthroughs
 
-Here I will be adding links to my writeups and walkthroughs for challenges.
+* Security Blue Team - Introduction to Dark Web Operations - [Capstone Writeup](./writeups/dark_web_op.html)
 
 # Certifications
 
