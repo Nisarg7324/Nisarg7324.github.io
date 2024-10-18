@@ -73,11 +73,11 @@ First, connect to the VPN. Then open the Tor Browser and connect to the Tor netw
 
 Copy and paste the provided .onion link in the Tor Browser. Hit Enter. This will open up a webpage as shown in the image below.
 
-![URL Landing Page](./images/dark_web_op_sbt/url_landing_page.png)
+![URL Landing Page](../images/dark_web_op_sbt/url_landing_page.png)
 
 On this webpage, click on the "GO TO THE CHALLENGE" button. This will lead to a login page as shown in the image below.
 
-![Login Page](./images/dark_web_op_sbt/darkforum_login_page.png)
+![Login Page](../images/dark_web_op_sbt/darkforum_login_page.png)
 
 ### Finding Login Credentials
 
