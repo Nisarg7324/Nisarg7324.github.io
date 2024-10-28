@@ -84,7 +84,7 @@ On this webpage, click on the "GO TO THE CHALLENGE" button. This will lead to a 
 
 Based on the questions in the requested info, it is clear that we need to find a function for the console, that will generate login credentials for this website.
 
-Right-click anywhere on the page and click Inspect. This will open a console. You will see various tabs that you can navigate to. Click on the Debugger tab. We can search for any keyword across all the loaded scripts in this tab.
+Right-click anywhere on the page and click Inspect. This will open a console. You will see various tabs that you can navigate to. Click on the Debugger tab. In this tab, we can search for any keyword across all the loaded scripts.
 
 If I were to write a function to generate user credentials, I would name it something like generateUserCredentials() or createUserCredentials(). Hence, I searched for the keyword "credential" and I found the required function name, as shown in the image below.
 
@@ -92,5 +92,26 @@ If I were to write a function to generate user credentials, I would name it some
 
 The name of the function is `generateUserCredentials()`. This answers our first question.
 
-Now go back to the console, type in the function, and hit enter. This will give you a _Base64 encoded string_. We need to decode this string.
+Now go back to the console, type in the function, and hit enter. This will give you a string. The function's output will be as shown in the figure below.
 
+![Function Output](../images/dark_web_sbt/function_output.png)
+
+This is a Base64-encoded string. Hence, we need to decode it into plain text. To do so, we will use an online Base64 decode tool. You may use a tool of your choice. I used the tool at [https://www.base64decode.org/](https://www.base64decode.org/). Once you decode the string, you can see the user credentials: username and password, as shown in the image below.
+
+![Base64 decoded](../images/dark_web_sbt/b64_decode.png)
+
+Now that we have user credentials, enter those credentials at the login page and log in to the website.
+
+### Exploring the Website
+
+Once we enter the credentials and log in to the website, we are greeted with a home page. However, the home page is full of numbers and no sentences. The website content is encoded. The following image shows the website's homepage.
+
+![DarkForum Main Page](../images/dark_web_sbt/darkforum_mainpage.png)
+
+This looks like a Hex ASCII encoding. I know this since I have seen this type of encoding before. Hence, we need to decode this to get the plaintext. You may choose a tool of your own. I used the tool at [https://www.rapidtables.com/convert/number/hex-to-ascii.html](https://www.rapidtables.com/convert/number/hex-to-ascii.html)
+
+So, I pasted the content shown on the main page into this tool for conversion and I got another Hex output, as shown in the image below.
+
+![hex to text p1](../images/dark_web_sbt/hext_to_text1.png)
+
+This is interesting. This again looks like Hex ASCII. The first number 41 (or 0x41) is hex for 65 which is the ASCII for the letter "A".
