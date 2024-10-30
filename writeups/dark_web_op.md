@@ -112,11 +112,11 @@ This looks like a Hex ASCII encoding. I know this since I have seen this type of
 
 So, I pasted the content shown on the main page into this conversion tool and got another Hex output, as shown in the image below.
 
-![hex to text p1](../images/dark_web_op_sbt/hext_to_text1.png)
+![hex to text p1](../images/dark_web_op_sbt/hext_to_txt1.png)
 
 This is interesting. It again looks like Hex ASCII. The first number 41 (or 0x41) is hex for 65 which is the ASCII for the letter "A". So let's paste the output again into the convertor tool and convert this hex to ASCII. This time, we got plaintext as shown in the image below.
 
-![hex to text p2](../images/dark_web_op_sbt/hex_to_text2.png)
+![hex to text p2](../images/dark_web_op_sbt/hex_to_txt2.png)
 
 I repeated this step for all the posts and found an interesting post that may resemble dealing with drug trafficking as requested in the challenge. The following image shows the post being considered. 
 
@@ -128,11 +128,11 @@ The plaintext obtained after converting the encoded text is shown in the image b
 
 ### Suspect's Posts
 
-Hence, we click on this post and are redirected to a thread where the author has posted several posts. The username of the author, who is now a suspect, is "_DarkChest984_" as mentioned at the bottom of the page (see screenshot below).
+Hence, we click on this post and are redirected to a thread where the author has posted several posts. The username of the author, who is now a suspect, is `DarkChest984` as mentioned at the bottom of the page (see screenshot below).
 
 ![suspect username](../images/dark_web_op_sbt/suspect_username.png)
 
-The first post where the suspect talks about the drug dealing business was posted on _26/11/20XX_ as seen in the image below.
+The first post where the suspect talks about the drug dealing business was posted on `26/11/20XX` as seen in the image below.
 
 ![first post](../images/dark_web_op_sbt/first_post.png)
 
@@ -148,15 +148,15 @@ This image contains some important details. The following image is the zoomed-in
 
 We get many details about the suspect from this image alone.
 
-* The suspect's country of citizenship is _United States of America_ (mentioned on the passport)
-* The name of the suspect is _Kestner Richard_ (mentioned in the upper right and lower left corners of the ticket)
-* The flight is from London to New York. This implies that the suspect is residing in _London, UK_.
+* The suspect's country of citizenship is `United States of America` (mentioned on the passport)
+* The name of the suspect is `Kestner Richard` (mentioned in the upper right and lower left corners of the ticket)
+* The flight is from `London to New York`. This implies that the suspect is residing in `London, UK`.
 
 Another interesting post is where the suspect mentions a seaport. The post contains an image of the seaport and information that indicates this seaport was the location where the drug dealing business was and will be carried out. The post is shown in the image below.
 
 ![seaport post](../images/dark_web_op_sbt/seaport_image.png)
 
-The most recent post of the suspect has a computer screen with a sticky note on it that contains some written details. It was posted on _26/10/20XX_. This post is shown in the image below.
+The most recent post of the suspect has a computer screen with a sticky note on it that contains some written details. It was posted on `26/10/20XX`. This post is shown in the image below.
 
 ![recent post](../images/dark_web_op_sbt/recent_post.png)
 
@@ -166,12 +166,12 @@ We need to zoom in on the sticky image as it contains some important details we 
 
 The sticky note contains two important details:
 
-* A date: _31st October_. This implies that the next shipment date for the drugs is 31st October.
-* Coordinates: _51°56’57.2”N 1°19’26.1”E_. These are the coordinates where the shipment will arrive, and the deal will take place.
+* A date: `31st October`. This implies that the next shipment date for the drugs is 31st October.
+* Coordinates: `51°56’57.2”N 1°19’26.1”E`. These are the coordinates where the shipment will arrive, and the deal will take place.
 
-I put the coordinates on Google Maps and the location is _Felixstowe Port, UK_. Upon further investigation, we can find out that the image of a seaport mentioned in a previous post is that of Felixstowe Port.
+I put the coordinates on Google Maps and the location is `Felixstowe Port, UK`. Upon further investigation, we can find out that the image of a seaport mentioned in a previous post is that of Felixstowe Port.
 
-![port map in google maps](../images/dark_web_op_sbt/port_map.png)
+![port map in google maps](../images/dark_web_op_sbt/port_map_name.png)
 
 Now, we have all the necessary details to complete the challenge.
 
@@ -179,15 +179,15 @@ Now, we have all the necessary details to complete the challenge.
 
 Based on the collected information, we can now answer all the questions asked in the challenge.
 
-1. What command is used in the Console to generate valid credentials? #### createUserCredentials()
-2. What is the suspect's site username? #### DarkChest984
-3. What is the suspect's first and last name? #### Kestner Richard
-4. What country is the suspect currently living in? #### United Kingdom (UK)
-5. What is the date of the first post related to drug trafficking? #### 26/11/20XX
-6. What is the date of the latest post related to drug trafficking? #### 26/10/20XX
-7. What type of encoding has been used on the site content? #### Hexadecimal ASCII
-8. When is the next drug shipment coming into the UK? #### 31st October (31/10/20XX)
-9. What are the GPS coordinates of the shipment delivery location? #### 51°56’57.2”N 1°19’26.1”E
-10. What is the name of the seaport where the shipment is being delivered? #### Felixstowe Port
+1. What command is used in the Console to generate valid credentials? `createUserCredentials()`
+2. What is the suspect's site username? `DarkChest984`
+3. What is the suspect's first and last name? `Kestner Richard`
+4. What country is the suspect currently living in? `United Kingdom (UK)`
+5. What is the date of the first post related to drug trafficking? `26/11/20XX`
+6. What is the date of the latest post related to drug trafficking? `26/10/20XX`
+7. What type of encoding has been used on the site content? `Hexadecimal ASCII`
+8. When is the next drug shipment coming into the UK? `31st October (31/10/20XX)`
+9. What are the GPS coordinates of the shipment delivery location? `51°56’57.2”N 1°19’26.1”E`
+10. What is the name of the seaport where the shipment is being delivered? `Felixstowe Port`
 
 This marks the end of the challenge.
