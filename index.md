@@ -15,5 +15,6 @@ Connect with me on [LinkedIn](https://www.linkedin.com/in/nisargdave7324/).
 
 # Certifications
 
+* [ISC2 Certified in Cybersecurity (ISC2 CC)](https://www.credly.com/badges/8fb10862-bca8-44dd-bc8e-31f77fe6521a/public_url)
 * [CompTIA Security+](https://www.credly.com/badges/1f024111-56ec-40d3-9e8c-2d68d93a31f4/linked_in_profile)
 * [AWS Certified Cloud Practitioner (AWS CCP)](https://www.credly.com/badges/8ef9dcd9-daa8-409f-b2c0-cb8529397a17/linked_in_profile)
