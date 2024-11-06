@@ -12,7 +12,7 @@ Connect with me on [LinkedIn](https://www.linkedin.com/in/nisargdave7324/).
 # Writeups and Walkthroughs
 
 * Security Blue Team - Introduction to Dark Web Operations - [Capstone Writeup](./writeups/dark_web_op.html)
-* Security Blue Team - Introduction to OSINT - [Capstone Writeup](./writeup/osint_sbt.html)
+* Security Blue Team - Introduction to OSINT - [Capstone Writeup](./writeups/osint_sbt.html)
 
 # Certifications
 
