@@ -69,9 +69,11 @@ We found 2 profiles by the username `sp1ritfyre`: on Twitter/X and Blogger. We w
 
 ### Twitter/X Account
 
-Let's view the Twitter/X account of the target. The image below shows some information regarding the target.
+Let's view the Twitter/X account of the target. The images below shows content from the target's Twitter/X account.
 
 ![Twitter/X account 1](../images/osint_sbt/twitter.png)
+
+![Twitter/X account 2](../images/osint_sbt/twitter_post.png)
 
 There is a website link mentioned in the user info: `cmVkaHVudC5uZXQK.xyz`. This looks like a Base64 encoded string. Thus, I used an online tool to decode this string. The tool I used is at [https://www.base64decode.org/](https://www.base64decode.org/). The following image shows that it is indeed a Base64 encoded string.
 
@@ -79,7 +81,7 @@ There is a website link mentioned in the user info: `cmVkaHVudC5uZXQK.xyz`. This
 
 Hence, we got one of the requested info: A website owned by the target which is `redhunt.net`. So, I visited the website and it had the same red bulb image as the Twitter/X post. I do not know what the red bulb image indicates, but it may indicate that the Twitter/X account and this website are handled by the same user. The image of the website home page is as shown below.
 
-![Redhunt website home page](../images.osint_sbt/redhunt_homepage.png)
+![Redhunt website home page](../images/osint_sbt/redhunt_homepage.png)
 
 I did not find much from the website. Hence, I moved on to our second lead: the Blogger page.
 
