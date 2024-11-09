@@ -67,7 +67,7 @@ The following image shows the filtered packets.
 
 ![Pings](../images/net_analysis_wireshark_sbt/pcap1_icmp_pings.png)
 
-We see two ICMP Requests here, and the destination IP address is `8.8.8.4.4`. Hence, the host that was pinged twice is `8.8.4.4`.
+We see two ICMP Requests here, and the destination IP address is `8.8.4.4`. Hence, the host that was pinged twice is `8.8.4.4`.
 
 ### Total DNS Query Response Packets
 
