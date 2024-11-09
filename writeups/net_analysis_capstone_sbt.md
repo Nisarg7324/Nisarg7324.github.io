@@ -90,7 +90,7 @@ It is clear that the CSV file that was downloaded over FTP, holds information ab
 
 Let's look at the FTP traffic again, as shown in the image below.
 
-![FTP File Download Successful](../images/net_analysis_castone_sbt/pcap3_reference_packet.png)
+![FTP File Download Successful](../images/net_analysis_capstone_sbt/pcap3_reference_packet.png)
 
 The highlighted packet shows that the transfer is complete. Hence the CSV file is fully downloaded. The packet number is _`621`_. Hence, we can find the CSV file in adjacent packets. Let's remove the filter and look for adjacent packets as shown in the image below.
 
