@@ -11,11 +11,12 @@ Connect with me on [LinkedIn](https://www.linkedin.com/in/nisargdave7324/).
 
 # Projects
 
-| Project                                                             | Skills                            | Platform           |
-|:--------------------------------------------------------------------|:----------------------------------|:-------------------|
-| [Dark Web Operations Capstone](./writeups/dark_web_op.html)         | `Dark Web Operations`, `Analysis` | Security Blue Team |
-| [OSINT Capstone](./writeups/osint_sbt.html)                         | `OSINT`, `Analysis`               | Security Blue Team |
-| [Wireshark Packet Analysis](./writeups/net_analysis_wireshark.html) | `Wireshark`, `Network Analysis`   | Security Blue Team |
+| Project                                                             | Skills                                             | Platform           |
+|:--------------------------------------------------------------------|:---------------------------------------------------|:-------------------|
+| [Dark Web Operations Capstone](./writeups/dark_web_op.html)         | `Dark Web Operations`, `Analysis`                  | Security Blue Team |
+| [OSINT Capstone](./writeups/osint_sbt.html)                         | `OSINT`, `Analysis`                                | Security Blue Team |
+| [Wireshark Packet Analysis](./writeups/net_analysis_wireshark.html) | `Wireshark`, `Network Analysis`, `PCAP Analysis`   | Security Blue Team |
+| [tcpdump Packet Analysis](./writeups/net_analysis_tcpdump.html)     | `tcpdump`, `Network Analysis`, `PCAP Analysis`     | Security Blue Team |
 
 # Certifications
 
