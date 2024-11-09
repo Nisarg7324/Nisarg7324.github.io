@@ -12,8 +12,13 @@ Connect with me on [LinkedIn](https://www.linkedin.com/in/nisargdave7324/).
 # Writeups and Walkthroughs
 
 * Security Blue Team - Introduction to Dark Web Operations - [Capstone Writeup](./writeups/dark_web_op.html)
+> Skills: Dark Web Operations, OSINT
+
 * Security Blue Team - Introduction to OSINT - [Capstone Writeup](./writeups/osint_sbt.html)
+> Skills: OSINT
+
 * Security Blue Team - Introduction to Network Analysis - [Wireshark Challenge Writeup](./writeups/net_analysis_wireshark.html)
+> Skills: Wireshark, Network Analysis
 
 # Certifications
 
