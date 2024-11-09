@@ -1,12 +1,12 @@
 # Introduction to Network Analysis Wireshark Challenge Writeup
 
-This writeup is for the Wireshark Challenge present in the Introduction to Network Analysis training course of Security Blue Team.
+This write-up is about the Wireshark Challenge, which is part of Security Blue Team's Introduction to Network Analysis training course.
 
 Link to the course: [Introduction to Network Analysis](https://www.securityblue.team/courses/introduction-to-network-analysis)
 
 ## Challenge
 
-In this challenge, we are provided with two _.pcap_ files, which are the Wireshark capture files, for analysis. We need to find answers for the requested information.
+In this challenge, we are given two _.pcap_ files, the Wireshark capture files, for analysis. We need to find answers to the requested information.
 
 The following is the requested information:
 
@@ -25,7 +25,7 @@ PCAP 2
 2. What is the version number of the attacker's FTP server?
 3. Which port was used to gain access to the victim Windows host?
 4. What is the name of the confidential file on the Windows host?
-5. What is the name of the log file that was created at 4:51 AM on Windows host?
+5. What is the name of the log file that was created at 4:51 AM on the Windows host?
 
 ```
 
@@ -39,11 +39,11 @@ You may download Wireshark from [here](https://www.wireshark.org/download.html).
 
 ## Solution - PCAP 1
 
-Let's open PCAP 1 file in Wireshark. The file is named as _SBT-PCAP1.pcap_.
+Let's open the PCAP 1 file in Wireshark. The file is named as _SBT-PCAP1.pcap_.
 
 ### Protocol on Port 3942
 
-I do not know whether the port 3942 is a TCP port or a UDP port. Hence, I wrote the following filter in Wireshark:
+I do not know whether port 3942 is a TCP port or a UDP port. Hence, I wrote the following filter in Wireshark:
 
 ```
 tcp.port == 3942 || udp.port == 3942
@@ -51,11 +51,11 @@ tcp.port == 3942 || udp.port == 3942
 
 The following image shows the filtered packets.
 
-![Protocol on Port 3942](../images/net_analysis_wireshark_sbt/pcap1_protocol3942.png)
+![Protocol on Port 3942](../images/net_analysis_wireshark_sbt/pcap1_port3942.png)
 
-Hence, the protocol active on port 3942 is `SSDP`, other wise known as `Simple Service Discovery Protocol`, and it is a `UDP port`.
+Hence, the protocol active on port 3942 is `SSDP`, otherwise known as `Simple Service Discovery Protocol`, and it is a `UDP port`.
 
-### IP address of pinged host
+### IP address of the pinged host
 
 We need to find the IP address of a host that was pinged twice. I know that pings use ICMP (Internet Control Message Protocol). Hence, I wrote the following filter Wireshark:
 
@@ -83,19 +83,19 @@ The following image shows the filtered packets.
 
 ![DNS Response packets](../images/net_analysis_wireshark_sbt/pcap1_dns_response.png)
 
-At the bottom of the window, we can see that the total number of packets displayed are 90. Hence, the total number of DNS Query Response packets in this pcap are `90`.
+At the bottom of the window, we can see that the total number of packets displayed is 90. Hence, the total number of DNS Query Response packets in this pcap is `90`.
 
-### IP Address of the host that sent most number of bytes
+### IP Address of the host that sent most bytes
 
 We need to find the IP address of the host that sent the most number of bytes. For this, we will leverage Wireshark's capture statistics.
 
 Click on `Statistics > Endpoints` from the menu bar, since we need to view statistics of endpoints.
 
-A new window will pop up displaying endpoint statistics. Since majority of the communication is through TCP, click on TCP tab. Now sort the list by _`Tx Bytes`_ in descending order as shown in the image below. _`Tx Bytes`_ refers to _transferred bytes_, in other words _the number of bytes sent from the endpoint_. The topmost endpoint after sorting the list will have the most number of bytes sent.
+A new window will pop up displaying endpoint statistics. Since the majority of the communication is through TCP, click on the TCP tab. Now sort the list by _`Tx Bytes`_ in descending order as shown in the image below. _`Tx Bytes`_ refers to _transferred bytes_, in other words _the number of bytes sent from the endpoint_. The topmost endpoint after sorting the list will have the most number of bytes sent.
 
 ![Most bytes sent](../images/net_analysis_wireshark_sbt/pcap1_highest_tx_bytes.png)
 
-The IP address of the endpoint that sent the higest number of bytes is `115.178.9.18`.
+The IP address of the endpoint that sent the highest number of bytes is `115.178.9.18`.
 
 ### Answering the PCAP 1 Challenge
 
@@ -106,15 +106,15 @@ Now, we have found answers to the requested information.
 3. How many DNS query response packets were captured? `90`
 4. What is the IP address of the host which sent the most number of bytes? `115.178.9.18`
 
-Now, let us move on to solving PCAP 2 Challenge
+Now, let us move on to solving the PCAP 2 Challenge
 
 ## Solution - PCAP 2
 
-Let's open PCAP 2 file in Wireshark. The file is named as _SBT-PCAP2.pcap_.
+Let's open the PCAP 2 file in Wireshark. The file is named as _SBT-PCAP2.pcap_.
 
 ### Finding the WebAdmin Password
 
-Since we need to find the WebAdmin password, I think we are looking at the HTTP traffic. There must be HTTP traffic where the password is exchanged. Since its HTTP, we can read the exchange as it is un-encrypted. Hence, I wrote the following Wireshark filter to filter out HTTP traffic:
+Since we need to find the WebAdmin password, I think we are looking at the HTTP traffic. There must be HTTP traffic where the password is exchanged. Since it is HTTP, we can read the exchange as it is un-encrypted. Hence, I wrote the following Wireshark filter to filter out HTTP traffic:
 
 ```
 http
@@ -132,7 +132,7 @@ Just as I predicted, the WebAdmin password is transmitted in plaintext here, whi
 
 ### FTP Version
 
-Since we need to find the version number of FTP server, run by the attacker, let's filter the FTP packets with the following Wireshark filter:
+Since we need to find the version number of the FTP server, run by the attacker, let's filter the FTP packets with the following Wireshark filter:
 
 ```
 ftp
@@ -154,7 +154,7 @@ Let's first observe the FTP traffic we saw just now as it holds some interesting
 
 The _`Packet #4336`_ is the last packet related to FTP traffic. However, if we observe the previous packets, we see that the victim machine with IP address _`192.168.56.103`_ is requesting _malware.exe_ file from the attacker's FTP server. Hence, we can conclude that the victim machine is already in control of the attacker.
 
-Hence, the attacker is connected to the victim machine and also giving it instructions, maybe via commands. The FTP traffic that is generated, is due to attacker instructing the victim machine to get _malware.exe_ file from their server. The FTP exchange is taking place during the attack session.
+Hence, the attacker is connected to the victim machine and also gives it instructions, maybe via commands. The FTP traffic that is generated, is due to the attacker instructing the victim machine to get the _malware.exe_ file from their server. The FTP exchange is taking place during the attack session.
 
 The attacker must be connected to the victim machine via a port, which is running this session. We need to find this port.
 
@@ -168,7 +168,7 @@ To confirm this, let's see the traffic after the last packet of FTP (_`Packet #4
 
 ![Post FTP](../images/net_analysis_wireshark_sbt/pcap2_post_ftp.png)
 
-We again see exchange between the victim machine using _`Port 8081`_ and the attacker machine using _`Port 50493`_.
+We again see the exchange between the victim machine using _`Port 8081`_ and the attacker machine using _`Port 50493`_.
 
 Hence, the FTP session is a part of the overall attack session. The Wireshark traffic proves this as the FTP traffic is sandwiched between the actual attack session.
 
@@ -176,7 +176,7 @@ In conclusion, the target port is `Port 8081`.
 
 ### Finding the Confidential File
 
-Since the traffic that is enclosing the FTP traffic is the traffic related to the attack session, we need to observe that. Now, it is difficult to observe through normal Wireshark window. Hence, we need to follow the TCP stream in order to get a clear picture.
+Since the traffic that is enclosing the FTP traffic is the traffic related to the attack session, we need to observe that. Now, it is difficult to observe through a normal Wireshark window. Hence, we need to follow the TCP stream to get a clear picture.
 
 Right-click on any packet before or after the FTP traffic. I selected the packet after FTP traffic as shown in the image below.
 
@@ -186,11 +186,11 @@ It will open a new window, as shown in the image below.
 
 ![TCP Stream](../images/net_analysis_wireshark_sbt/pcap2_tcp_stream_2.png)
 
-We can see the session the attacker is having with the victim machine. The part with blue font and background is by the victim machine, while the part with red font and background is by the attacker. Hence, we can see that the attacker is interacting with the command prompt of the victim machine.
+We can see the session the attacker is having with the victim's machine. The part with blue font and background is by the victim machine, while the part with red font and background is by the attacker. Hence, we can see that the attacker is interacting with the command prompt of the victim machine.
 
-The attacker has listed the files in present directory using the _dir_ command. I have highlighted the name of the confidential file, which is `Employee_Information_CONFIDENTIAL.txt`.
+The attacker has listed the files in the present directory using the _dir_ command. I have highlighted the name of the confidential file, which is `Employee_Information_CONFIDENTIAL.txt`.
 
-Do not close this window yet, as we will continue to next task on this window.
+Do not close this window yet, as we will continue to the next task on this window.
 
 ### Finding the Log File
 
@@ -202,13 +202,13 @@ Hence, the name of the required log file is `LogFile.log`.
 
 ### The Attack
 
-We have already gathered all the information asked in the challenge. However, I need to observe this TCP Stream further in order to see the complete attack, and verify the FTP conversation.
+We have already gathered all the information asked in the challenge. However, I need to observe this TCP Stream further in order to see the complete attack and verify the FTP conversation.
 
-As we further scroll down the window, we see that the attacker is creating a text file containing script to execute FTP conversation, from connecting to attacker's FTP server to downloading _malware.exe_ file, as shown in the image below.
+As we further scroll down the window, we see that the attacker is creating a text file containing a script to execute FTP conversation, from connecting to the attacker's FTP server to downloading _malware.exe_ file, as shown in the image below.
 
 ![FTP Script Creation and Execution](../images/net_analysis_wireshark_sbt/pcap2_ftp_script_full.png)
 
-Clearly, the attacker saved the script in _1.txt_ file, and used it as script to connect to the attacker's FTP server. The file _malware.exe_ is downloaded from this process. The attacker then again lists the files present in the directory.
+Clearly, the attacker saved the script in the _1.txt_ file and used it as a script to connect to the attacker's FTP server. The file _malware.exe_ is downloaded from this process. The attacker then again lists the files present in the directory.
 
 The following image shows the presence of _malware.exe_ file in the present directory, which was not present in the previous instance of directory listing.
 
@@ -224,6 +224,6 @@ Now, we have found all the information to answer the challenge questions.
 2. What is the version number of the attacker's FTP server? `1.5.5`
 3. Which port was used to gain access to the victim Windows host? `8081`
 4. What is the name of the confidential file on the Windows host? `Employee_Information_CONFIDENTIAL.txt`
-5. What is the name of the log file that was created at 4:51 AM on Windows host? `LogFile.log`
+5. What is the name of the log file that was created at 4:51 AM on the Windows host? `LogFile.log`
 
 This marks the end of both challenges.
