@@ -4,21 +4,18 @@ layout: default
 
 Welcome to my portfolio website!
 
-I am Nisarg Dave. I am a Rochester Institute of Technology graduate pursuing an MS in Cybersecurity. My professional interests include application security, network security, and incident response. Here, I will share my writeups and walkthroughs for the challenges I do to demonstrate my skills as a cybersecurity professional.
+My name is Nisarg Dave. I am a Rochester Institute of Technology graduate pursuing an MS in Cybersecurity. My professional interests include application security, network security, and incident response. Here, I will share my writeups and walkthroughs for the challenges I face to demonstrate my skills as a cybersecurity professional.
 
 Connect with me on [LinkedIn](https://www.linkedin.com/in/nisargdave7324/).
 [View my Resume](https://docs.google.com/document/d/1fKf0opZz1XZcIg2tymXtIaCDrS_91zek542ybPqB3aA/edit)
 
-# Writeups and Walkthroughs
+# Projects
 
-* Security Blue Team - Introduction to Dark Web Operations - [Capstone Writeup](./writeups/dark_web_op.html)
-> Skills: Dark Web Operations, OSINT
-
-* Security Blue Team - Introduction to OSINT - [Capstone Writeup](./writeups/osint_sbt.html)
-> Skills: OSINT
-
-* Security Blue Team - Introduction to Network Analysis - [Wireshark Challenge Writeup](./writeups/net_analysis_wireshark.html)
-> Skills: Wireshark, Network Analysis
+| Project                                                             | Skills                            | Platform           |
+|:--------------------------------------------------------------------|:----------------------------------|:-------------------|
+| [Dark Web Operations Capstone](./writeups/dark_web_op.html)         | `Dark Web Operations`, `Analysis` | Security Blue Team |
+| [OSINT Capstone](./writeups/osint_sbt.html)                         | `OSINT`, `Analysis`               | Security Blue Team |
+| [Wireshark Packet Analysis](./writeups/net_analysis_wireshark.html) | `Wireshark`, `Network Analysis`   | Security Blue Team |
 
 # Certifications
 
