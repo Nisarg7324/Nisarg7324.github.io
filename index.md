@@ -4,7 +4,7 @@ layout: default
 
 Welcome to my portfolio website!
 
-My name is Nisarg Dave. I am a Rochester Institute of Technology graduate pursuing an MS in Cybersecurity. My professional interests include application security, network security, and incident response. Here, I will share my writeups and walkthroughs for the challenges I face to demonstrate my skills as a cybersecurity professional.
+My name is Nisarg Dave. I am a Rochester Institute of Technology graduate holding an MS in Cybersecurity. My professional interests include application security, network security, and incident response. Here, I will share my writeups and walkthroughs for the challenges I face to demonstrate my skills as a cybersecurity professional.
 
 Connect with me on [LinkedIn](https://www.linkedin.com/in/nisargdave7324/).
 
