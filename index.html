@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nisarg Dave Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--<div id="navbar"></div>-->
+    <div class="container">
+        <header>
+            <h1>Nisarg Dave Portfolio</h1>
+        </header>
+
+        <section id="intro">
+            <h2>About Me</h2>
+            <div class="intro-content">
+                <img src="images/profile_photo.jpeg" alt="My Profile Picture" class="profile-image">
+                <div class="intro-text">
+                    <p>
+                        Welcome to my portfolio website!
+
+I am Nisarg Dave. I am a Rochester Institute of Technology graduate holding an MS in Cybersecurity. My professional interests include application security, network security, and incident response.
+                    </p>
+                    <p>
+                        Let's connect on <a href="https://www.linkedin.com/in/nisargdave7324/" target="_blank">LinkedIn</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        
+
+        <section id="writeups">
+            <h2>Writeups</h2>
+            <p>I have put together some writeups that describe my solution and strategies to solve challenges on online learning platforms. Feel free to check them out.</p>
+            <div class="writeup-grid">
+                <div class="writeup">
+                    <a href="writeups/osint/osint.html" style="text-decoration: none; color: inherit;">
+                        <h3>OSINT</h3>
+                        <p>Writeups on Open-Source Intelligence (OSINT) Challenges</p>
+                        <p><strong>No. of Writeups:</strong> 2</p>
+                    </a>
+                </div>
+                <div class="writeup">
+                    <a href="writeups/network_analysis/network_analysis.html" style="text-decoration: none; color: inherit;">
+                        <h3>Network Analysis</h3>
+                        <p>Writeups on network packet capture analysis challenges</p>
+                        <p><strong>No. of Writeups:</strong> 3</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <ul>
+                <li>(ISC)2 Certified in Cybersecurity - <a href="https://www.credly.com/badges/8fb10862-bca8-44dd-bc8e-31f77fe6521a/public_url" target="_blank">Verify Here</a></li>
+                <li>CompTIA Security+ - <a href="https://www.credly.com/badges/1f024111-56ec-40d3-9e8c-2d68d93a31f4/linked_in_profile" target="_blank">Verify Here</a></li>
+                <li>AWS Certified Cloud Practitioner - <a href="https://www.credly.com/badges/8ef9dcd9-daa8-409f-b2c0-cb8529397a17/linked_in_profile" target="_blank">Verify Here</a></li>
+            </ul>
+        </section>
+
+<!--
+        <footer>
+            <p>&copy; 2023 My Portfolio</p>
+        </footer> -->
+    </div>
+    <!---
+    <script>
+        fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+            let script = document.createElement('script');
+            script.src = 'script.js';
+            document.body.appendChild(script);
+        });
+    </script> -->  
+</body>
+</html>

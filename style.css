@@ -1,0 +1,228 @@
+/* style.css */
+body {
+    font-family: 'Inter';
+    margin: 0;
+    padding: 0;
+    background-color: #FAF9F6; /* Light background */
+    color: #333; /* Dark text for contrast */
+}
+
+.container {
+    max-width: 960px; /* Still have a max-width for very large screens */
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #FAF9F6;
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;*/
+}
+
+#intro .intro-content {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically center content */
+    gap: 20px; /* Spacing between image and text */
+}
+
+.profile-image {
+    max-width: 300px; /* Set a maximum width for the image */
+    height: auto;
+    border-radius: 8px; /* Optional: Rounded corners for the image */
+}
+
+#nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #90D5FF;
+    padding: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    transition: top 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+#nav-bar button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#hamburger-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    background-color: #90D5FF;
+    padding: 10px;
+    border: 1px solid #ccc;
+    z-index: 1001;
+}
+
+#hamburger-menu a {
+    display: block;
+    padding: 5px 0;
+    text-decoration: none;
+    color: #90D5FF;
+}
+
+/* Mobile Styles (Image on top, text below) */
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+    #intro .intro-content {
+        flex-direction: column; /* Stack image and text vertically */
+        text-align: center; /* Center the text */
+        align-items: center;
+    }
+    .profile-image {
+        max-width: 200px;
+        margin-bottom: 20px; /* Add space between image and text */
+    }
+    #top-bar {
+        flex-wrap: wrap;
+        padding: 5px;
+    }
+    #top-bar button {
+        margin: 5px;
+        padding: 6px 10px;
+    }
+    #hamburger-menu {
+        width: 150px;
+        left: 5px;
+    }
+}
+
+/* Desktop Styles (75% width) */
+@media (min-width: 992px) { /* Adjust breakpoint if needed */
+    .container {
+        width: 70%;
+        max-width: none; /* Override max-width on larger screens */
+    }
+    #hamburger-menu {
+        width: 200px;
+    }
+}
+
+/* Tablet and Mobile Styles (Full width) */
+@media (max-width: 991px) { /* Adjust breakpoint to match desktop media query */
+    .container {
+        width: 95%; /* Use 95% to leave some margin on the sides */
+        max-width: none;
+        margin: 10px auto; /* Reduced margin */
+        padding: 10px;
+    }
+}
+
+
+.skills {
+    display: flex; /* Use flexbox for easy alignment */
+    flex-wrap: wrap; /* Allow skills to wrap to the next line */
+    margin-top: 10px; /* Add some spacing above the skills */
+}
+
+.skill {
+    background-color: #e0e0e0; /* Light gray background */
+    color: #333; /* Dark text */
+    padding: 5px 10px; /* Adjust padding as needed */
+    margin-right: 5px; /* Spacing between skills */
+    margin-bottom: 5px; /* Spacing between wrapped skills */
+    border-radius: 20px; /* Make it pill-shaped */
+    font-size: 0.85em; /* Slightly smaller font size */
+    white-space: nowrap; /* Prevent skill text from wrapping */
+}
+
+
+header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+h1, h2, h3, h4 {
+    color: #0056b3; /* Blue headings */
+}
+
+#intro, #writeups, #certifications, #challenge, #toolsreq {
+    margin-bottom: 30px;
+}
+
+#challengedesc {
+    background-color: #fbccc2;
+    border-radius: 10px;
+    padding: 15px;
+    overflow-wrap: break-word;
+}
+
+#answer {
+    background-color: #cfffa8;
+    border-radius: 10px;
+    padding: 1px;
+}
+
+#code {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+}
+
+.solimage {
+    max-width: 80%;
+    max-height: auto;
+    display: block;
+    margin: 0 auto;
+    align-content: center;
+    padding: 10px;
+}
+
+.writeup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    grid-gap: 20px;
+}
+
+.writeup {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s; /* Add a transition for hover effect */
+}
+
+.writeup:hover {
+    transform: scale(1.02); /* Slightly enlarge on hover */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.writeup a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+ol {
+    padding-left: 20px;
+}
+
+footer {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    color: #777;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    .writeup-grid {
+        grid-template-columns: 1fr;
+    }
+}

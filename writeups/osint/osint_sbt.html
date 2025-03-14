@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Operation Writeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>OSINT Operation Writeup</h1>
+            <a href="osint.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </header>
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>
+                This writeup is for <strong><i>Introduction to OSINT Capstone</i></strong> which is a part of <strong><i>Security Blue Team's Introduction to OSINT</i></strong> course.
+
+Link to the course <a href="https://www.securityblue.team/courses/introduction-to-osint" target="_blank">Introduction to OSINT</a>.
+            </p>
+        </section>
+        <section id="challenge">
+            <p>
+                The following is the text from the document describing the challenge:
+            </p>
+            <section id="challengedesc">
+                <pre>
+                    ___________   _____ _   ____   _______ ___   _      _     
+                    |  _  | ___ \ /  ___| | / /\ \ / /  ___/ _ \ | |    | |    
+                    | | | | |_/ / \ `--.| |/ /  \ V /| |_ / /_\ \| |    | |    
+                    | | | |  __/   `--. \    \   \ / |  _||  _  || |    | |    
+                    \ \_/ / |     /\__/ / |\  \  | | | |  | | | || |____| |____
+                     \___/\_|     \____/\_| \_/  \_/ \_|  \_| |_/\_____/\_____/
+                                                                               
+                                                                               
+                    Investigation into MSP data breach. Clear web investigation team.
+                    
+                    ===============================++===============================
+                    
+                    
+                    Known Info:
+                    =================
+                    Twitter Handle: @sp1ritfyre
+                    
+                    Required Info:
+                    =================
+                    [1] First Name:
+                    [2] Last Name:
+                    [3] Age:
+                    [4] Country:
+                    [5] Interests (5 minimum):
+                    [6] Hacker's employer (company name):
+                    [7] Hacker's position within company:
+                    
+                    Online Presence:
+                    =================================
+                    [8] Self-Owned Website (Hacker owns the domain):
+                    [9] Other Websites (Person does not own the domain, such as blogs):
+                    
+                    Evidence Collection:
+                    =================================
+                    [10] Any URLs of webpages that directly tie individual to MSP breach:
+                    
+                    Email Addresses Utilised:
+                    =================================
+                    [11] What email addresses have been used by the hacker? (2)
+                    
+                    ===============================++===============================
+                    
+                    
+                </pre>
+            </section>
+        </section>
+        <section id="solution">
+            <h2>Solution</h2>
+            <p>The only known information regarding the suspect is their Twitter/X handle, which is <strong id="answer">@sp1ritfyre</strong>.</p>
+            <h3>Search the username</h3>
+            <p>Since we only know the Twitter/X handle of of the suspect, we will start from there. So let's look up for this account. We can simply search this username on Google. I got some results out of which two caught my attention which are mentioned in the images below.</p>
+            <img class="solimage" src="../../images/osint_sbt/google_search_handle_p1.png">
+            <img class="solimage" src="../../images/osint_sbt/google_search_handle_p2.png">
+            <p>We found 2 profiles by the username <strong>sp1ritfyre</strong>: on Twitter/X and Blogger. We will start with the Twitter/X account.</p>
+            <h3>Investigating Twitter/X Account</h3>
+            <p>Let's view the Twitter/X account of the target. The images below shows content from the target's Twitter/X account.</p>
+            <img class="solimage" src="../../images/osint_sbt/twitter.png">
+            <img class="solimage" src="../../images/osint_sbt/twitter_post.png">
+            <p>There is a website link mentioned in the user info: <strong id="answer">cmVkaHVudC5uZXQK.xyz</strong>. This looks like a Base64 encoded string. Thus, I used an online tool to decode this string. The tool I used is at <a href="https://www.base64decode.org/">https://www.base64decode.org/</a>. The following image shows that it is indeed a Base64 encoded string.</p>
+            <img class="solimage" src="../../images/osint_sbt/original_link.png">
+            <p>Hence, we got one of the requested info: A website owned by the target which is <strong id="answer">redhunt.net</strong>. So, I visited the website and it had the same red bulb image as the Twitter/X post. I do not know what the red bulb image indicates, but it may indicate that the Twitter/X account and this website are handled by the same user. The image of the website home page is as shown below.</p>
+            <img class="solimage" src="../../images/osint_sbt/redhunt_homepage.png">
+            <p>I did not find much from the website. Hence, I moved on to our second lead: the Blogger page.</p>
+            <h3>Investigating Blogger Account</h3>
+            <p>I visited <strong>Sp1ritFyre's</strong> Blogger account page and we get some more information about <strong>Sp1ritFyre</strong> as shown in the image below.</p>
+            <img class="solimage" src="../../images/osint_sbt/sam_wood_profile.png">
+            <p>The first thing I observed is the same red bulb image. This image feels like a trademark that shows that this content or website is handled by <strong>Sp1ritFyre</strong>.</p>
+            <p>I see that there is a hyperlink at <strong id="answer">Hacker Stories</strong>. Once I clicked on the link, I got redirected to <a href="https://sp1ritfyrehackerstories.blogspot.com/"><strong id="answer">https://sp1ritfyrehackerstories.blogspot.com/</strong></a> as shown in the image below.</p>
+            <img class="solimage" src="../../images/osint_sbt/hacker_stories_blog.png">
+            <p>However, there is not any new information here, but this is a blog website handled by _Sp1ritFyre_ which is part of a requested info.</p>
+            <p>Next, we get to learn that <strong>Sp1ritFyre</strong> is a female. She joined Blogger in March 2020. We also get a "Location" that looks like a Hex string: <strong id="answer">68747470733a2f2f73616d6d6965776f6f647365632e626c6f6773706f742e636f6d</strong>. I used <a href="https://cyberchef.org/">CyberChef</a> to decode this string, as it automatically detects the type of encoding and gives the decoded string, as shown in the image below.</p>
+            <img class="solimage" src="../../images/osint_sbt/cyberchef_decode.png">
+            <p>Hence, we have now received another blog website: <strong id="answer">https://sammiewoodsec.blogspot.com</strong>.</p>
+            <h3>Investigating Blogspot Thread</h3>
+            <p>I visited <a href="https://sammiewoodsec.blogspot.com">https://sammiewoodsec.blogspot.com</a> and the image below shows the landing page.</p>
+            <img class="solimage" src="../../images/osint_sbt/blog_page.png">
+            <p>We get a bunch of information from this website. From the little section on the right, we can see that the user's first name is <strong id="answer">Sam</strong> and the last name is <strong id="answer">Woods</strong>. Hence, our target's name is <strong id="answer">Sam Woods</strong> who also goes by the username <strong id="answer">sp1ritfyre</strong> on Twitter/X.</p>
+            <p>Also, from the text that I have highlighted, we get the personal email address of Sam, which is <strong id="answer">d1ved33p@gmail.com</strong>.</p>
+            <p>As I scrolled down, I found a blog where Sam discusses how she got into Cybersecurity which also provides additional information, as shown in the image below.</p>
+            <img class="solimage" src="../../images/osint_sbt/about_sam.png">
+            <p>We find out that Sam's age is <strong id="answer">23</strong>. She went to <strong id="answer">University of Plymouth</strong>, and started working at <strong id="answer">PhilmanSecurityInc.</strong> as <strong id="answer">Junior Pen Tester</strong> shortly after she graduated.</p>
+            <p>Now, as we saw before, this website has an <strong>About Me</strong> section. We will move on to Sam's About Me section now to see if we can find any new information.</p>
+            <h3>Sam Wood's Blogger Account</h3>
+            <p>When clicked on visiting Sam's full profile, we get redericted to Sam's Blogger profile as shown in the image below.</p>
+            <img class="solimage" src="../../images/osint_sbt/sam_wood_profile.png">
+            <p>We find some new additional information from this page. Sam is located in <strong id="answer">Reading, United Kingdom</strong>. She is interested in <strong id="answer">Security, Programming, Technology, Gaming, Photography, and Camping</strong>. Her favorite movie is <strong id="answer">Ready Player One</strong> which came out in 2018. Her favorite music bands are <strong id="answer">The Beatles, Rolling Stones, and Queen</strong>. Lastly, her favorite books are <strong id="answer">The Hunger Games</strong> series.</p>
+            <p>Now, we have enough information on our target <strong>sp1ritfyre</strong> or <strong>Sam Woods</strong> to fill out all the requested information and answer the questions.</p>
+            <h3>Answering the Challenge</h3>
+            <p>Based on the collected information, we can now answer all the challenge questions.</p>
+            <p>
+                1) What is the hacker's first name? <strong id="answer">Sam</strong><br>
+                2) What is the hacker's last name? <strong id="answer">Woods</strong><br>
+                3) What is the hacker's age? <strong id="answer">23</strong><br>
+                4) What country does the hacker live in? <strong id="answer">United Kingdom</strong><br>
+                5) What are some of the hacker's interests? <strong id="answer">Security, Programming, Technology, Gaming, Photography, and Camping</strong><br>
+                6) What company does the hacker work for? <strong id="answer">PhilmanSecurityInc.</strong><br>
+                7) What is the hacker's position within the company? <strong id="answer">Junior Pen Tester</strong><br>
+                8) What is the full URL of the website owned by the hacker? <strong id="answer">https://redhunt.net</strong><br>
+                9) List any full URLs of the websites not owned, but used by the hacker (Blogs only). <strong id="answer">https://sammiewoodsec.blogspot.com/, https://sp1ritfyrehackerstories.blogspot.com/</strong><br>
+                10. What email address has been used by the hacker? <strong id="answer">d1ved33p@gmail.com</strong><br>
+            </p>
+            <h3>This marks the end of the challenge.</h3>
+        </section>
+
+        <footer>
+            <a href="osint.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+          </footer>
+    </div>
+</body>
+</html>

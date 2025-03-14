@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Web Operations Writeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="container">
+      <header>
+        <h1>Dark Web Operation Writeup</h1>
+        <a href="osint.html" style="text-decoration: none;">&lt; Back</a>
+        &nbsp; &nbsp; &nbsp;
+        <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+    </header>
+      <section id="intro">
+        <h2>Introduction</h2>
+        <p>
+            This writeup is for <strong><i>Introduction to Dark Web Operations Capstone</i></strong> which is a part of <strong><i>Security Blue Team's Introduction to Dark Web Operations</i></strong> course.
+        </p>
+        
+        <p>
+            Link to the course <a href="https://www.securityblue.team/courses/introduction-to-dark-web-operations" target="_blank">Introduction to Dark Web Operations</a>.
+        </p>
+        
+      </section>
+      <section id="challenge">
+        <h2>Challenge</h2>
+        <p>The following excerpt is taken from the original challenge:</p>
+        <section id="challengedesc">
+        <p>
+            Hi Investigator, we need you...<br>
+            <br>
+Last month we were informed about a huge drug trafficking network that was taking place in the UK through the TOR network, in response to this situation we set to work and managed to dismantle their main TOR marketplace to stop drugs reaching the streets of the UK. However, we were informed that one of the creators of this network managed to evade us and is now continuing to carry out this type of activity. This is where you come in. We think we have found the site that this individual uses to "tell their stories" regarding criminal activity. <br>
+<br>
+We need you to find evidence that will allow us to identify this subject, relate it to the drug trafficking crimes, and bring them to justice. We know this is a difficult task, but we are confident in your abilities and we are sure that you will succeed. <br>
+<br>
+1] Gain access to the site (We're sure there's some way for users to gain valid credentials fairly easily). <br>
+2] Find evidence that the individual is involved in drug trafficking. <br>
+3] Find any information about the next shipment that is coming in, so we can seize it. <br>
+<br>
+
+
+  <br>
+  <br>
+ Known Info: <br>
+=================== <br>				      
+[*] DWebsite:  5xdv6dqxv2bsbmlgttsq3ma3nw6ffa2zhqbl7o4w46p32wsqulzrtsqd.onion <br>
+<br>
+<br>
+ Requested Info: <br>
+============================== <br>
+1) What command is used in the Console to generate valid credentials? <br>
+2) What is the suspect's site username? <br>
+3) What is the suspect's first and last name? <br>
+4) What country is the suspect currently living in? <br>
+5) What is the date of the first post related to drug trafficking? <br>
+6) What is the date of the latest post related to drug trafficking? <br>
+7) What type of encoding has been used on the site content? <br>
+8) When is the next drug shipment coming into the UK? <br>
+9) What are the GPS coordinates of the shipment delivery location?  <br> 
+10) What is the name of the seaport where the shipment is being delivered? <br>
+        </p>
+      </section>
+      </section>
+      <section id="toolsreq">
+        <h2>Tools Required</h2>
+        <p>
+            It is clear from the challenge that we will navigate to the .onion site. Hence, in order to navigate to .onion site, we will require Tor Browser. For added safety, I also suggest using a VPN before connecting to the Tor network.
+        </p>
+        
+        <p>
+            For this capstone, I have used <strong>Tor Browser</strong> and <strong>ProtonVPN</strong>. You may choose the VPN of your choice.
+        </p>
+
+        <p>
+            Download <strong>Tor Browser</strong> from <a href="https://www.torproject.org/download/" target="_blank">here</a>.
+        </p>
+
+        <p>
+            Download <strong>ProtonVPN</strong> from <a href="https://protonvpn.com/" target="_blank">here</a>.
+        </p>
+        </p>
+      </section>
+
+      <section id="solution">
+        <h2>Solution</h2>
+        <h3>Visit the .onion site</h3>
+        <p>
+            First, connect to the VPN. Then open the Tor Browser and connect to the Tor network.
+        </p>
+        <p>
+            Copy and paste the provided .onion link in the Tor Browser. Hit Enter. This will open up a webpage as shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/url_landing_page.png">
+        <p>
+            On this webpage, click on the "GO TO THE CHALLENGE" button. This will lead to a login page as shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/darkforum_login_page.png">
+        
+        <h3>Finding Login Credentials</h3>
+        <p>
+            Based on the questions in the requested info, it is clear that we need to find a function for the console, that will generate login credentials for this website.
+        </p>
+        <p>
+            Right-click anywhere on the page and click Inspect. This will open a console. You will see various tabs that you can navigate to. Click on the Debugger tab. In this tab, we can search for any keyword across all the loaded scripts.
+        </p>
+        <p>
+            If I were to write a function to generate user credentials, I would name it something like <i>generateUserCredentials()</i> or <i>createUserCredentials()</i>. Hence, I searched for the keyword <strong>"credential"</strong> and I found the required function name, as shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/found_function.png">
+        <p>
+            The name of the function is <strong id="answer">generateUserCredentials()</strong>. This answers our first question.
+        </p>
+        <p>
+            Now go back to the console, type in the function, and hit enter. This will give you a string. The function's output will be as shown in the figure below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/function_output.png">
+        <p>
+            This is a <strong>Base64-encoded string</strong>. Hence, we need to decode it into plain text. To do so, we will use an online Base64 decode tool. You may use a tool of your choice. I used the tool at <a href="https://www.base64decode.org/" target="_blank">https://www.base64decode.org/</a>. Once you decode the string, you can see the user credentials: username and password, as shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/b64_decode.png">
+        <p>
+            Now that we have user credentials, enter those credentials at the login page and log in to the website.
+        </p>
+        <h3>Exploring the Website</h3>
+        <p>
+            Once we enter the credentials and log in to the website, we are greeted with a home page. However, the home page is full of numbers and no sentences. The website content is encoded. The following image shows the website's homepage.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/darkforum_mainpage.png">
+        <p>
+            This looks like a <strong>Hex ASCII encoding</strong>. I know this since I have seen this type of encoding before. Hence, we need to decode this to get the plaintext. You may choose a tool of your own. I used the tool at <a href="https://www.rapidtables.com/convert/number/hex-to-ascii.html" target="_blank">https://www.rapidtables.com/convert/number/hex-to-ascii.html</a>.
+        </p>
+        <p>
+            So, I pasted the content shown on the main page into this conversion tool and got another Hex output, as shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/hext_to_txt1.png">
+        <p>
+            This is interesting. It again looks like <strong>Hex ASCII</strong>. The first number <strong>41 (or 0x41)</strong> is hex for <strong>65</strong> which is the ASCII for the letter <strong>"A"</strong>. So let's paste the output again into the convertor tool and convert this hex to ASCII. This time, we got plaintext as shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/hex_to_txt2.png">
+        <p>
+            I repeated this step for all the posts and found an interesting post that may resemble dealing with drug trafficking as requested in the challenge. The following image shows the post being considered. 
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/target_post.png">
+        <p>
+            The plaintext obtained after converting the encoded text is shown in the image below. The author mentions delivering candies (it must be a code name for drugs) and collecting payment.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/post_translation.png">
+        <h3>Suspect's Post</h3>
+        <p>
+            Hence, we click on this post and are redirected to a thread where the author has posted several posts. The username of the author, who is now a suspect, is <strong id="answer">DarkChest984</strong> as mentioned at the bottom of the page (see screenshot below).
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/suspect_username.png">
+        <p>
+            The first post where the suspect talks about the drug dealing business was posted on <strong id="answer">26/11/20XX</strong> as seen in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/first_post.png">
+        <p>
+            As we scroll down the page, we see multiple posts related to the drug trafficking business where the suspect is sharing their experience and also talks about an upcoming business opportunity.
+        </p>
+        <p>
+            There is an interesting post where the suspect has shared an image containing their <strong>passport</strong> and <strong>flight ticket</strong>, as shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/vacation_post.png">
+        <p>
+            This image contains some important details. The following image is the zoomed-in image of the post focusing on the passport and the flight ticket.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/passport_ticket.png">
+        <p>
+            We get many details about the suspect from this image alone.
+        </p>
+        <ul>
+            <li>The suspect's country of citizenship is <strong id="answer">United States of America</strong> (mentioned on the passport)</li>
+            <li>The name of the suspect is <strong id="answer">Kestner Richard</strong> (mentioned in the upper right and lower left corners of the ticket)</li>
+            <li>The flight is from <strong id="answer">London to New York</strong>. This implies that the suspect is residing in <strong id="answer">London, UK</strong>.</li>
+        </ul>
+        <p>
+            Another interesting post is where the suspect mentions a <strong>seaport</strong>. The post contains an image of the seaport and information that indicates this seaport was the location where the drug dealing business was and will be carried out. The post is shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/seaport_image.png">
+        <p>
+            The most recent post of the suspect has a computer screen with a <strong>sticky note</strong> on it that contains some written details. It was posted on <strong id="answer">26/10/20XX</strong>. This post is shown in the image below.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/recent_post.png">
+        <p>
+            We need to zoom in on the sticky image as it contains some important details we require. The following image shows a zoomed-in image of the sticky note.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/sticky_note.png">
+        <p>
+            The sticky note contains two important details:
+        </p>
+        <ul>
+            <li><strong>Shipment Date</strong>: <strong id="answer">31st October</strong>. This implies that the <strong>next shipment date</strong> for the drugs is 31st October.</li>
+            <li><strong>Coordinates</strong>: <strong id="answer">51°56’57.2”N 1°19’26.1”E</strong>. These are the coordinates where the shipment will arrive, and the deal will take place.</li>
+        </ul>
+        <p>
+            I put the coordinates on <strong>Google Maps</strong> and the location is <strong id="answer">Felixstowe Port, UK</strong>. Upon further investigation, we can find out that the image of a seaport mentioned in a previous post is that of Felixstowe Port.
+        </p>
+        <img class="solimage" src="../../images/dark_web_op_sbt/port_map_name.png">
+        <p>
+            Now, we have all the necessary details to complete the challenge.
+        </p>
+        <h3>Answering the Challenge</h3>
+        <p>
+            Based on the collected information, we can now answer all the questions asked in the challenge.
+        </p>
+        <p>
+            1) What command is used in the Console to generate valid credentials? <strong id="answer">createUserCredentials()</strong><br>
+            2) What is the suspect's site username? <strong id="answer">DarkChest984</strong><br>
+            3) What is the suspect's first and last name? <strong id="answer">Kestner Richard</strong><br>
+            4) What country is the suspect currently living in? <strong id="answer">United Kingdom (UK)</strong><br>
+            5) What is the date of the first post related to drug trafficking? <strong id="answer">26/11/20XX</strong><br>
+            6) What is the date of the latest post related to drug trafficking? <strong id="answer">26/10/20XX</strong><br>
+            7) What type of encoding has been used on the site content? <strong id="answer">Hexadecimal ASCII</strong><br>
+            8) When is the next drug shipment coming into the UK? <strong id="answer">31st October (31/10/20XX)</strong><br>
+            9) What are the GPS coordinates of the shipment delivery location? <strong id="answer">51°56’57.2”N 1°19’26.1”E</strong><br>
+            10) What is the name of the seaport where the shipment is being delivered? <strong id="answer">Felixstowe Port</strong><br>
+        </p>
+        <h3>This marks the end of the challenge.</h3>
+      </section>
+
+      <footer>
+        <a href="osint.html" style="text-decoration: none;">&lt; Back</a>
+        &nbsp; &nbsp; &nbsp;
+        <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+      </footer>
+  </div>
+</body>
+</html>

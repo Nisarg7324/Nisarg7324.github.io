@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Analysis using tcpdump</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Network Analysis using tcpdump Writeup</h1>
+            <a href="network_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </header>
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>This write-up concerns the <strong><i>tcpdump Challenge</i></strong>, part of the <strong><i>Security Blue Team's Introduction to Network Analysis</i></strong> training course.</p>
+            <p>Link to the course: <a href="https://www.securityblue.team/courses/introduction-to-network-analysis" target="_blank">Introduction to Network Analysis</a></p>
+            <p>Go to homepage by clicking <a href="../../index.html">here</a>.</p>
+        </section>
+        <section id="challenge">
+            <h2>Challenge</h2>
+            <p>In this challenge, we are given two <strong><i>.pcap</i></strong> files named <strong><i>SBT-PCAP4.pcap</i></strong> and <strong><i>SBT-PCAP5.pcap</i></strong>. The following are the questions based on the given two pcap files:</p>
+            <section id="challengedesc">
+                <p>
+                    PCAP 4<br><br>
+
+                    1. How many UDP packets have been captured?<br>
+                    2. How many TCP packets have both the SYN and ACK flags set?<br>
+                    3. Which version of Chrome was used to connect to securityblue.team?<br>
+                    4. How many packets have a TTL value of 38?<br><br>
+
+                    PCAP 5<br><br>
+
+                    1. What is the name of the PNG file on the webserver at 192.168.56.111?<br>
+                    2. Which version of OpenSSH is running on the server?<br>
+                    3. On which port is the .zip file being served?<br>
+                    4. When was a packet with a TCP checksum value of 53203 captured? (Format: xx:xx:xx.xxxxxx)<br>
+                </p>
+            </section>
+            <p>We will begin by analyzing PCAP 4 and then move on to PCAP 5.</p>
+        </section>
+        <section id="toolsreq">
+            <h2>Tools Required</h2>
+            <p>Since this is a tcpdump challenge, we will require the <strong>tcpdump</strong> tool.</p>
+            <p>I used a Virtual Machine running Kali Linux as Operating System for this challenge since tcpdump comes pre-installed with Kali Linux. However, you may download tcpdump for Windows by following the instructions from <a href="https://github.com/the-tcpdump-group/tcpdump/blob/master/doc/README.windows.md">here</a></p>
+        </section>
+        <section id="solution">
+            <h2>Solution for PCAP 4</h2>
+            <p>Let's start with analyzing PCAP 4. We will look over the file according to the required information.</p>
+            <h3>Total UDP Packets</h3>
+            <p>We need to find the number of UDP packets present in the pcap file. Hence, I wrote the following command:</p>
+            <p id="code">tcpdump -r SBT-PCAP4.pcap udp --count</p>
+            <p>This command shows the total number of UDP packets present in the <strong>SBT-PCAP4.pcap</strong> file as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap4_udp_count.png">
+            <p>Hence, there are <strong id="answer">3290</strong> UDP packets present in the <strong>SBT-PCAP4.pcap</strong> file.</p>
+            <h3>Total TCP Packets with SYN and ACK flags set</h3>
+            <p>TCP header consists a total of 8 flags. Each flag can have a value of either 0 or 1, with 1 meaning the flag is set. Hence, all 8 flags combine form a 8 bit binary number.</p>
+            <p>From left to right, the SYN flag is in the 7th position while the ACK flag is in the 4th position. Thus, our 8-bit binary number denoting both SYN and ACK flag set will be <strong id="answer">00010010</strong>. The decimal equivalent of this binary number will be <strong id="answer">18</strong>.</p>
+            <p>Hence, I wrote the following command to count the total number of packets that have both SYN and ACK flags set:</p>
+            <p id="code">tcpdump -r SBT-PCAP4.pcap "tcp[tcpflags] == 18" --count</p>
+            <p>The following image shows the output of the command.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap4_tcp_syn_ack_on.png">
+            <p>Hence, there are <strong id="answer">20</strong> packets with SYN and ACK flags set.</p>
+            <h3>Finding the Chrome Version</h3>
+            <p>In order to find the Chrome version, we will require a more verbose output from tcpdump this time. There are no specific commands to filter by browser name in tcpdump, hence I used the <strong>grep</strong> utility of Linux, as shown in the following command:</p>
+            <p id="code">tcpdump -r SBT-PCAP4.pcap -v | grep Chrome</p>
+            <p>The following image shows the output of the above command.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap4_chrome_version.png">
+            <p>Hence, the Chrome version used is <strong id="answer">80.0.3987.87</strong>.</p>
+            <h3>Total Packets with TTL value of 38</h3>
+            <p>Time-to-live (TTL) is a field in the IPv4 header. This field is present at the <strong>9th byte</strong> of the IPv4 header. Hence, the index of the TTL field in the IPv4 header will be <strong id="answer">8</strong> (index counting starts at 0).</p>
+            <p>Therefore, I wrote the following command to count the total number of packets with TTL equal to 38:</p>
+            <p id="code">tcpdump -r SBT-PCAP4.pcap "ip[8] == 38" --count</p>
+            <p>The following image shows the output of the above command.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap4_ip_ttl.png">
+            <p>Hence, there are <strong id="answer">710</strong> packets that have a TTL value of 38.</p>
+            <h3>Answering the PCAP 4 Challenge</h3>
+            <p>Now, we have all the required information to answer this challenge.</p>
+            <p>
+                1) How many UDP packets have been captured? <strong id="answer">3290</strong><br>
+                2) How many TCP packets have both the SYN and ACK flags set? <strong id="answer">20</strong><br>
+                3) Which version of Chrome was used to connect to securityblue.team? <strong id="answer">80.0.3987.87</strong><br>
+                4) How many packets have a TTL value of 38? <strong id="answer">710</strong><br>
+            </p>
+            <p>Now, let us move on to the PCAP 5 Challenge solution.</p>
+            
+            <h2>Solution for PCAP 5</h2>
+            <p>Let's analyze the <strong>SBT-PCAP5.pcap</strong> file based on the requested information.</p>
+            <h3>Finding the PNG File Name</h3>
+            <p>Since we need to find the name of the PNG file, we will require to view the content of the packets as well. The "<strong>-A</strong>" tag in tcpdump helps us to view the contents of the packet as well. Hence, I wrote the following command to filter the packet containing the "<strong>png</strong>" string in its content:</p>
+            <p id="code">tcpdump -r SBT-PCAP5.pcap -A | grep -i png</p>
+            <p>The following image shows the output of the above command.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap5_png_name.png">
+            <p>There is only one line from the entire pcap file that contains a "<strong>.png</strong>" file, hence this must be our required file. The name of the <strong>.png</strong> file is <strong id="answer">proprietary.png</strong>.</p>
+            <h3>Finding the OpenSSH Version</h3>
+            <p>We will require a more verbose output from tcpdump this time to also view the OpenSSH version. I wrote the following command to filter packets using OpenSSH:</p>
+            <p id="code">tcpdump -r SBT-PCAP5.pcap -v | grep -i openssh</p>
+            <p>The following image shows the output of the above command.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap5_openssh_version.png">
+            <p>There are 2 packets having OpenSSH strings in them. We know that the web server is running at <strong>192.168.56.111</strong>. Hence, the OpenSSH server used by <strong>192.168.56.111</strong> is <strong id="answer">OpenSSH v7.9p1</strong>. Hence, the required OpenSSH version is <strong id="answer">7.9p1</strong>.</p>
+            <h3>Finding the Port serving ZIP File</h3>
+            <p>Since we need to filter packets with the presence of a <strong>.zip</strong> file, we need to also view the content of the packets. Hence, I wrote the following command to filter the packet dealing with the <strong>.zip</strong> file:</p>
+            <p id="code">tcpdump -r SBT-PCAP5.pcap -A | grep -i zip</p>
+            <p>However, as shown in the image below, it did not show the port number but did show <strong>gzip</strong> as one of the accepted encodings which confirms that this packet is related to the <strong>.zip</strong> file.  Hence, we just need to display some more lines before this output to view the IP address and port number information. Hence, the following is the modified command:</p>
+            <p id="code">tcpdump -r SBT-PCAP5.pcap -A | grep -i zip -B 3</p>
+            <p>This command displays 3 more lines before the normal output as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap5_zip.png">
+            <p>The information shows the source socket as <strong>192.168.56.111.3016</strong> which is of the format <strong><i>IP.Port</i></strong>. Since <strong>192.168.56.111</strong> is the IP address of the server, <strong id="answer">3016</strong> is the port on which the <strong>.zip</strong> file is served.</p>
+            <h3>Finding the Timestamp of required packet</h3>
+            <p>We need to find the timestamp when the packet with a TCP Checksum value of 53203 was captured.</p>
+            <p>Checksum is a field in the TCP header. The checksum is <strong>2 bytes long</strong> and starts at the <strong>17th byte</strong> of the TCP header. Hence, the index of the checksum field in the TCP header will be <strong>16</strong> since we start counting at 0.</p>
+            <p>However, unlike <strong><i>ip[8]</i></strong> which we used previously in PCAP 4 challenge, we cannot simply use <strong><i>tcp[16]</i></strong> as by default it will only read <strong>1 byte</strong> at index 16. Since the checksum is 2 bytes long, we need to clarify that we are reading 2 bytes at index 16, which can be done with the syntax <strong><i>tcp[16:2]</i></strong>. Hence, I wrote the following command to filter the packet with a checksum value of 53203:</p>
+            <p id="code">tcpdump -r SBT-PCAP5.pcap "tcp[16:2] == 53203"</p>
+            <p>The following image shows the output of the above command.</p>
+            <img class="solimage" src="../../images/net_analysis_tcpdump_sbt/pcap5_timestamp.png">
+            <p>Hence, the timestamp at which this packet was captured is <strong id="answer">06:04:46.20792</strong>`.</p>
+            <h3>Answering the PCAP 5 Challenge</h3>
+            <p>Now, we have all the information to answer the challenge questions.</p>
+            <p>
+                1. What is the name of the PNG file on the webserver at 192.168.56.111? <strong id="answer">proprietary.png</strong>
+                2. Which version of OpenSSH is running on the server? <strong id="answer">7.9p1</strong>
+                3. On which port is the .zip file being served? <strong id="answer">3016</strong>
+                4. When was a packet with a TCP checksum value of 53203 captured? (Format: xx:xx:xx.xxxxxx) <strong id="answer">06:04:46.207925</strong>
+            </p>
+            <h3>This marks the end of the challenge</h3>
+        </section>
+
+        <footer>
+            <a href="network_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </footer>
+    </div>
+</body>
+</html>

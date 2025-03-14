@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Analysis using Wireshark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Network Analysis using Wireshark Writeup</h1>
+            <a href="network_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </header>
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>This write-up is about the <strong><i>Wireshark Challenge</i></strong>, which is part of <strong><i>Security Blue Team's Introduction to Network Analysis</i></strong> training course.</p>
+            <p>Link to the course: <a href="https://www.securityblue.team/courses/introduction-to-network-analysis">Introduction to Network Analysis</a></p>
+        </section>
+        <section id="challenge">
+            <h2>Challenge</h2>
+            <p>In this challenge, we are given two <strong>.pcap</strong> files, the Wireshark capture files, for analysis. We need to find answers to the requested information.</p>
+            <p>The following is the requested information:</p>
+            <section id="challengedesc">
+                <p>
+                    PCAP 1<br><br>
+
+                    1. Which protocol was used over port 3942?<br>
+                    2. What is the IP address of the host that was pinged twice?<br>
+                    3. How many DNS query response packets were captured?<br>
+                    4. What is the IP address of the host which sent the most number of bytes?<br><br>
+
+                    PCAP 2<br><br>
+
+                    1. What is the WebAdmin password?<br>
+                    2. What is the version number of the attacker's FTP server?<br>
+                    3. Which port was used to gain access to the victim Windows host?<br>
+                    4. What is the name of the confidential file on the Windows host?<br>
+                    5. What is the name of the log file that was created at 4:51 AM on the Windows host?<br>
+                </p>
+            </section>
+            <p>We will begin by analyzing PCAP 1 and then move on to PCAP 2.</p>
+        </section>
+        <section id="toolsreq">
+            <h2>Tools Required</h2>
+            <p>Before we begin, we need to have the necessary tools in our arsenal. For this challenge, we only require one tool, which is Wireshark.</p>
+            <p>You may download Wireshark from <a href="https://www.wireshark.org/download.html">here</a>.</p>
+        </section>
+        <section id="solution">
+            <h2>Solution for PCAP 1</h2>
+            
+            <p>Let's open the PCAP 1 file in Wireshark. The file is named as <strong>SBT-PCAP1.pcap</strong>.</p>
+            
+            <h3>Finding the Protocol on Port 3942</h3>
+            <p>I do not know whether port 3942 is a TCP port or a UDP port. Hence, I wrote the following filter in Wireshark:</p>
+            <p id="code">tcp.port == 3942 || udp.port == 3942</p>
+            <p>The following image shows the filtered packets.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap1_port3942.png">
+            <p>Hence, the protocol active on port 3942 is <strong id="answer">SSDP</strong>, otherwise known as <strong id="answer">Simple Service Discovery Protocol</strong>, and it is a <strong id="answer">UDP port</strong>.</p>
+            
+            <h3>Finding the IP address of the pinged host</h3>
+            <p>We need to find the IP address of a host that was pinged twice. I know that pings use ICMP (Internet Control Message Protocol). Hence, I wrote the following filter Wireshark:</p>
+            <p id="code">icmp</p>
+            <p>The following image shows the filtered packets.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap1_icmp_pings.png">
+            <p>We see two ICMP Requests here, and the destination IP address is <strong id="answer">8.8.4.4</strong>. Hence, the host that was pinged twice is <strong id="answer">8.8.4.4</strong>.</p>
+
+            <h3>Finding the Total DNS Query Response Packets</h3>
+            <p>We need to find the total number of DNS Query Response packets present in the entire pcap file.</p>
+            <p>A DNS packet has various flags which are set to determine the type of DNS packet, like DNS Query, DNS Query Response, etc. A DNS Query Response packet has the <strong>Response Flag</strong> set to <strong>1</strong>. Hence, I wrote the following Wireshark filter to filter out only DNS Query Response packets:</p>
+            <p id="code">dns.flags.response == 1</p>
+            <p>The following image shows the filtered packets.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap1_dns_response.png">
+            <p>At the bottom of the window, we can see that the total number of packets displayed is 90. Hence, the total number of DNS Query Response packets in this pcap is <strong id="answer">90</strong>.</p>
+
+            <h3>IP Address of the host that sent most bytes</h3>
+            <p>We need to find the IP address of the host that sent the most number of bytes. For this, we will leverage Wireshark's capture statistics.</p>
+            <p>Click on <strong>Statistics > Endpoints</strong> from the menu bar, since we need to view statistics of endpoints.</p>
+            <p>A new window will pop up displaying endpoint statistics. Since the majority of the communication is through TCP, click on the TCP tab.</p>
+            <p>Now sort the list by <strong>Tx Bytes</strong> in descending order as shown in the image below. <strong>Tx Bytes</strong> refers to <i>transferred bytes</i>, in other words <i>the number of bytes sent from the endpoint</i>. The topmost endpoint after sorting the list will have the most number of bytes sent.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap1_highest_tx_bytes.png">
+            <p>The IP address of the endpoint that sent the highest number of bytes is <strong id="answer">115.178.9.18</strong>.</p>
+
+            <h3>Answering the PCAP 1 Challenge</h3>
+            <p>Now, we have found answers to the requested information.</p>
+            <p>
+                1. Which protocol was used over port 3942? <strong id="answer">SSDP</strong><br>
+                2. What is the IP address of the host that was pinged twice? <strong id="answer">8.8.4.4</strong><br>
+                3. How many DNS query response packets were captured? <strong id="answer">90</strong><br>
+                4. What is the IP address of the host which sent the most number of bytes? <strong id="answer">115.178.9.18</strong><br>
+            </p>
+            <p>Now, let us move on to solving the PCAP 2 Challenge</p>
+
+            <h2>Solution for PCAP 2</h2>
+
+            <p>Let's open the PCAP 2 file in Wireshark. The file is named as <strong>SBT-PCAP2.pcap</strong>.</p>
+
+            <h3>Finding the WebAdmin Password</h3>
+            <p>Since we need to find the WebAdmin password, I think we are looking at the HTTP traffic. There must be HTTP traffic where the password is exchanged. Since it is HTTP, we can read the exchange as it is un-encrypted. Hence, I wrote the following Wireshark filter to filter out HTTP traffic:</p>
+            <p id="code">http</p>
+            <p>The resulting filtered packets are shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_http_1.png">
+            <p>We can see that in <strong>Packet #4121</strong>, the <strong>password.txt</strong> file has been requested, and <strong>Packet #4123</strong> has the response, which is the contents of <strong>password.txt</strong> file. Let's right-click on <strong>Packet #4121</strong>, and click on <strong>Follow > HTTP Stream</strong>. A new window will popup as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_http_2_webadmin_password.png">
+            <p>Just as I predicted, the WebAdmin password is transmitted in plaintext here, which is <strong id="answer">sbt123</strong>.</p>
+
+            <h3>Finding the FTP Version</h3>
+            <p>Since we need to find the version number of the FTP server, run by the attacker, let's filter the FTP packets with the following Wireshark filter:</p>
+            <p id="code">ftp</p>
+            <p>The following image shows the filtered packets and the packet that holds FTP version.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_ftp_version.png">
+            <p>It is clear from <strong>Packet #4243</strong> that the FTP server used by the attacker is <strong id="answer">pyftpdlib 1.5.5</strong> with the version number being <strong id="answer">1.5.5</strong>.</p>
+            <p>Also, we can deduct that the <strong><i>IP address</i></strong> of the <strong><i>attacker</i></strong> is <strong id="answer">192.168.56.1</strong>, and since it is likely to communicate with the victim machine, the <strong><i>IP address</i></strong> of the <strong><i>victim</i></strong> machine is <strong id="answer">192.168.56.103</strong>.</p>
+            
+            <h3>Finding the Port used for gaining access</h3>
+            <p>Let's first observe the FTP traffic we saw just now as it holds some interesting information. The following image shows the FTP traffic.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_ftp_end.png">
+            <p>The <strong>Packet #4336</strong> is the last packet related to FTP traffic. However, if we observe the previous packets, we see that the victim machine with IP address <strong>192.168.56.103</strong> is requesting <strong>malware.exe</strong> file from the attacker's FTP server. Hence, we can conclude that the victim machine is already under control of the attacker.</p>
+            <p>Hence, the attacker is connected to the victim machine and also gives it instructions, maybe via commands. The FTP traffic that is generated, is due to the attacker instructing the victim machine to get the <strong>malware.exe</strong> file from their server. The FTP exchange is taking place during the attack session.</p>
+            <p>The attacker must be connected to the victim machine via a port, which is running this session. We need to find this port.</p>
+            <p>Now, we know that the first packet of this FTP traffic is <strong>Packet #4243</strong>. Let's observe the traffic before this packet. The following image shows the traffic before <strong>Packet $4243</strong>.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_ftp_start.png">
+            <p>We can see that there are bunch of exchanges between the victim machine (<strong>192.168.56.103</strong>) and the attacker machine (<strong>192.168.56.1</strong>). We can also see that the attacker machine is using <strong>Port 50493</strong> and the victim machine is using <strong>Port 8081</strong>. Hence, we can say that <strong id="answer">Port 8081</strong> is the port on the victim machine that the attacker used to gain access to the victim machine.</p>
+            <p>To confirm this, let's see the traffic after the last packet of FTP (<strong>Packet #4336</strong>). The following image shows the packets after completion of FTP traffic.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_post_ftp.png">
+            <p>We again see the exchange between the victim machine using <strong>Port 8081</strong> and the attacker machine using <strong>Port 50493</strong>.</p>
+            <p>Hence, the FTP session is a part of the overall attack session. The Wireshark traffic proves this as the FTP traffic is sandwiched between the actual attack session.</p>
+            <p>In conclusion, the target port is <strong id="answer">Port 8081</strong>.</p>
+
+            <h3>Finding the Confidential File</h3>
+            <p>Since the traffic that is enclosing the FTP traffic is the traffic related to the attack session, we need to observe that. Now, it is difficult to observe through a normal Wireshark window. Hence, we need to follow the TCP stream to get a clear picture.</p>
+            <p>Right-click on any packet before or after the FTP traffic. I selected the packet after FTP traffic as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_follow_tcp_stream.png">
+            <p>It will open a new window, as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_tcp_stream_2.png">
+            <p>We can see the session the attacker is having with the victim's machine. The part with blue font and background is by the victim machine, while the part with red font and background is by the attacker. Hence, we can see that the attacker is interacting with the command prompt of the victim machine.</p>
+            <p>The attacker has listed the files in the present directory using the <strong>dir</strong> command. I have highlighted the name of the confidential file, which is <strong id="answer">Employee_Information_CONFIDENTIAL.txt</strong>.</p>
+            <p>Do not close this window yet, as we will continue to the next task on this window.</p>
+
+            <h3>Finding the Log File</h3>
+            <p>As we scroll down the window, we will find the log file that was generated at 4:51 AM, as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_log_file.png">
+            <p>Hence, the name of the required log file is <strong id="answer">LogFile.log</strong>.</p>
+
+            <h3>The Attack</h3>
+            <p>We have already gathered all the information asked in the challenge. However, I need to observe this TCP Stream further in order to see the complete attack and verify the FTP conversation.</p>
+            <p>As we further scroll down the window, we see that the attacker is creating a text file containing a script to execute FTP conversation, from connecting to the attacker's FTP server to downloading <strong>malware.exe</strong> file, as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_ftp_script_full.png">
+            <p>Clearly, the attacker saved the script in the <strong>1.txt</strong> file and used it as a script to connect to the attacker's FTP server. The file <strong>malware.exe</strong> is downloaded from this process. The attacker then again lists the files present in the directory.</p>
+            <p>The following image shows the presence of <strong>malware.exe</strong> file in the present directory, which was not present in the previous instance of directory listing.</p>
+            <img class="solimage" src="../../images/net_analysis_wireshark_sbt/pcap2_file_presence.png">
+            <p>The <strong>malware.exe</strong> file was downloaded on <strong>02/08/2020 4:14 PM</strong>.</p>
+            <p>Hence, the following is a step-by-step process of the attack:</p>
+            <ol>
+                <li>The attacker (IP address: <strong>192.168.56.1</strong>) connects and establishes a remote session with the victim machine (IP address: <strong>192.168.56.103</strong>) using <strong>Port 8081</strong> of the victim machine.</li>
+                <li>The attacker lists down the contents of the victim machine's Desktop directory.</li>
+                <li>The attacker writes a script to download <strong>malware.exe</strong> and saves it as <strong>1.txt</strong> file.</li>
+                <li>The attacker establishes a FTP connection from the victim machine to their own FTP server by executing the script in <strong>1.txt</strong> file.</li>
+                <li>The <strong>malware.exe</strong> file is downloaded to the victim machine.</li>
+                <li>The attacker then again lists down the contents of the Desktop directory to verify the download of <strong>malware.exe</strong> file.</li>
+            </ol>
+
+            <h3>Answering the PCAP 2 Challenge</h3>
+            <p>Now, we have found all the information to answer the challenge questions.</p>
+            <p>
+                1. What is the WebAdmin password? <strong id="answer">sbt123</strong><br>
+                2. What is the version number of the attacker's FTP server? <strong id="answer">1.5.5</strong><br>
+                3. Which port was used to gain access to the victim Windows host? <strong id="answer">8081</strong><br>
+                4. What is the name of the confidential file on the Windows host? <strong id="answer">Employee_Information_CONFIDENTIAL.txt</strong><br>
+                5. What is the name of the log file that was created at 4:51 AM on the Windows host? <strong id="answer">LogFile.log</strong><br>
+            </p>
+
+            <h3>This marks the end of both challenges.</h3>
+        </section>
+
+        <footer>
+            <a href="network_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Analysis Capstone Writeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Network Analysis Capstone Writeup</h1>
+            <a href="network_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </header>
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>This write-up is for the <strong><i>Network Analysis Capstone</i></strong> which is part of the <strong><i>Security Blue Team's Introduction to Network Analysis</i></strong> training course.</p>
+            <p>Link to the course: <a href="https://www.securityblue.team/courses/introduction-to-network-analysis">Introduction to Network Analysis</a></p>
+        </section>
+        <section id="challenge">
+            <h2>Challenge</h2>
+            <p>The following is the challenge scenario and requested information:</p>
+            <section id="challengedesc">
+                <p>
+                    Alexis is a fictional cybersecurity company with thousands of employees. An attacker has gained unauthorized entry into its premises and has connected their laptop to an unused port on a switch. The attacker now has access to the company's internal networks. Within the internal network, there is a central server where critical proprietary data is stored. In this capture, the attacker is attempting to collect SSH credentials that they can use to log into the central server.<br><br>
+
+                    Given File: SBT-PCAP3.pcap<br><br>
+
+                    Challenge Questions:<br><br>
+
+                    1. What is the MAC address of the attacker?<br>
+                    2. What is the type of attack which is taking place that allows the attacker to listen in on conversations between the central server and another host?<br>
+                    3. What is the file which was downloaded from the central server?<br>
+                    4. What department does Borden Danilevich work in?<br>
+                    5. What is the SSH password of the Domain Administrator?<br>
+                </p>
+            </section>
+        </section>
+        <section id="toolsreq">
+            <h2>Tools Required</h2>
+            <p>I have analyzed the <strong>SBT-PCAP3.pcap</strong> file using <strong>Wireshark</strong>. You may download Wireshark from <a href="https://www.wireshark.org/download.html">here</a></p>
+        </section>
+        <section id="solution">
+            <h2>Solution</h2>
+            <p>Let's analyze the <strong>SBT-PCAP3.pcap</strong> file in order to answer the challenge questions.</p>
+
+            <h3>Finding Attacker's MAC Address</h3>
+            <p>As per the scenario, the attacker gained unauthorized access to an unused switch port and has connected their laptop to that port.</p>
+            <p>Hence, since the laptop is a new device connected to the network, the first thing it will do is send out ARP Requests to learn MAC address of the machines present in the network. As we open the <strong>SBT-PCAP3.pcap</strong> file, we see a bunch of ARP requests as shown in the following images.</p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_mac_address.png">
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_confirm_new_addition.png">
+            <p>It is clear from these ARP requests that the IP address of the newly added machine is <strong id="answer">192.168.56.111</strong> and its MAC address is <strong id="answer">08:00:27:3d:27:5d</strong>. This is the attacker's machine.</p>
+
+            <h3>Attack Type</h3>
+            <p>The type of attack that allows an attacker to listen on the conversation between two machines, or in our case between the central server and another host, is <strong id="answer">man in the middle</strong> attack.</p>
+
+            <h3>Analyzing the PCAP Statistics</h3>
+            <p>Before moving on to the next question, let us first analyze the statistics of the <strong>SBT-PCAP3.pcap</strong> file in order to get more insight on the type of traffic and conversations between endpoints.</p>
+
+            <h4>Protocol Heirarchy</h4>
+            <p>Let us first look at the Protocol Heirarchy of the capture. In the menu bar of Wireshark, select <strong>Statistics > Protocol Heirarchy</strong>. This will open up a new window as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_protocol_heirarchy.png">
+            <p>Under the TCP section, we can notice that there is SSH and FTP traffic.</p>
+            <p>We have already been told that the attacker is attempting to collect SSH credentials. Based on the significant amount of SSH traffic it looks like the attacker may have succeeded.</p>
+            <p>Also, the presence of FTP traffic is also important for our analysis. The FTP traffic might provide information on the file that we are looking for.</p>
+            <p>This file may contain information on SSH login credentials, which attacker intercepted through man in the middle attack, and then gained access to the SSH server.</p>
+
+            <h4>Conversations</h4>
+            <p>Let us look at the Conversations to figure out which machines are communicating with each other. In the menu bar of Wireshark, selece <strong>Statistics > Conversations</strong>. This will open up a new window as shown in the image below.
+            </p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_conversations.png">
+            <p>Select the TCP tab in the Conversations window. There are 3 established connections. We can see that our <strong>attacker's machine</strong>, with IP address of <strong>192.169.56.111</strong>, is connected to <strong>192.168.56.1</strong> at <strong>port 22</strong> which is an <strong>SSH port</strong>. Also, <strong>192.168.56.1</strong> is also serving on <strong>port 21</strong> which is an <strong>FTP port</strong>. Hence, we can conclude that the <strong>central server's</strong> IP address is <strong id="answer">192.168.56.1</strong>. 
+            </p>
+
+            <h3>File Name</h3>
+            <p>We are given that a file was downloaded from the central server. Now, we know that the file is downloaded over FTP. So I filtered Wireshark traffic based on FTP traffic as shown in the image below. Right-click on the first filtered packet, and click <strong>Follow > TCP Stream</strong>.
+            </p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_ftp_follow_stream.png">
+            <p>A new window will pop up as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_file_name.png">
+            <p>We can see a <strong>RETR</strong> (retrieve) command to download a file named <strong id="answer">Alevis_Employee_Information_Chart.csv</strong> which is the file we are looking for.
+            </p>
+
+            <h3>Finding Borden Danilevich's Department</h3>
+            <p>It is clear that the CSV file that was downloaded over FTP, holds information about employees. Hence, in order to find Border's department, we need to look into the content of this CSV file.
+            </p>
+            <p>Let's look at the FTP traffic again, as shown in the image below.</p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_reference_packet.png">
+            <p>The highlighted packet shows that the transfer is complete. Hence the CSV file is fully downloaded. The packet number is <strong>621</strong>. Hence, we can find the CSV file in adjacent packets. Let's remove the filter and look for adjacent packets as shown in the image below.
+            </p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_packet623.png">
+            <p>The <strong>Packet #623</strong> looks promising as it is originated from the <strong>192.168.56.1</strong> (<strong>central server</strong>) and directed to the <strong>192.168.56.103</strong>(<strong>host that requested the CSV file</strong>).</p>
+            <p>Also, in the packet byte pane in the bottom right of Wireshark, you can see the ASCII text that looks like content of the CSV file. Therefore, right-click on <strong>Packet #623</strong> and select <strong>Follow > TCP Stream</strong>. This will open up a new window as shown in the image below.
+            </p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_csv.png">
+            <p>This window shows the contents of the CSV file that we wanted. The 2nd line shows the table headers so we can find out which value is first name, last name, department, SSH password, etc.
+            </p> 
+            <p>At the bottom of the window, you can see the <strong>Find</strong> tab. Enter <strong>Borden</strong> in the field and press enter, as shown in the image below.
+            </p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_dept.png">
+            <p>We found and entry of <strong>Borden Danilevich</strong>. Borden's department is <strong id="answer">Sales</strong>.</p>
+
+            <h3>Finding SSH Password of Domain Administrator</h3>
+            <p>In the same window, search for <strong>admin</strong> instead, since we are looking for Domain Administrator's password, as shown in the image below.
+            </p>
+            <img class="solimage" src="../../images/net_analysis_capstone_sbt/pcap3_admin_password.png">
+            <p>We found the entry of <strong>Domain Admin</strong>. The SSH password of Domain Admin is <strong id="answer">gMR&lt;4eXf]e6W</strong>.</p>
+
+            <h3>Answering the Challenge</h3>
+            <p>Now, we have all the required information to answer the challenge questions.</p>
+            <p>
+                1. What is the MAC address of the attacker? <strong id="answer">08:00:27:3d:27:5d</strong><br>
+                2. What is the type of attack which is taking place that allows the attacker to listen in on conversations between the central server and another host? <strong id="answer">man in the middle</strong><br>
+                3. What is the file which was downloaded from the central server? <strong id="answer">Alevis_Employee_Information_Chart.csv</strong><br>
+                4. What department does Borden Danilevich work in? <strong id="answer">Sales</strong><br>
+                5. What is the SSH password of the Domain Administrator? <strong id="answer">gMR&lt;4eXf]e6W</strong><br>
+            </p>
+
+            <h3>This marks the end of the capstone.</h3>
+        </section>
+
+        <footer>
+            <a href="network_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </footer>
+    </div>
+</body>
+</html>
