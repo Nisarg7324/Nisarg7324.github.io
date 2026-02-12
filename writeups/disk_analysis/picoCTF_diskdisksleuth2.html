@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>picoCTF 2021 - Disk, disk, sleuth! II - Writeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>picoCTF 2021 - Disk, disk, sleuth! II - Writeup</h1>
+            <a href="disk_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </header>
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>This writeup is for the <strong><i>Disk, disk, sleuth! II</i></strong> challenge which was part of the <strong><i>picoCTF 2021</i></strong> Capture The Flag (CTF) tournament.</p>
+            <p>Link to the challenge: <a href="https://play.picoctf.org/practice/challenge/137">Disk, disk, sleuth! II</a> (<strong>Note:</strong> Login required to view the challenge)</p>
+        </section>
+        <section id="challenge">
+            <h2>Challenge</h2>
+            <p>The following is the challenge description:</p>
+            <section id="challengedesc">
+                <p>
+                    All we know is the file with the flag is named <pre>down-at-the-bottom.txt</pre>
+                    Attached file: dds2-alpine.flag.img.gz <br>
+                </p>
+            </section>
+        </section>
+        <section id="toolsreq">
+            <h2>Tools Required</h2>
+            <p>
+                I used <strong>The Sleuth Kit</strong> tools along with other Linux command line utilities to complete this challenge. The following are The Sleuth Kit tools that I used in this challenge:
+                <ul>
+                    <li><strong>mmls</strong>: for viewing the disk partition information.</li>
+                    <li><strong>fls</strong>: for viewing the contents of the directories present in the disk image.</li>
+                    <li><strong>icat</strong>: for viewing the contents of the files in the disk image.</li>
+                </ul>
+                Additionally, picoCTF provides a webshell that I also used for this challenge. 
+            </p>
+        </section>
+        <section id="solution">
+            <h2>Solution</h2>
+            <p>Let's analyze the attached files to find the flag.</p>
+            
+            <h3>Download the Challenge File</h3>
+            <p>First, we will download the challenge file in the <strong><i>/tmp</i></strong> directory of our webshell session.</p>
+            <p>I used the following command to download the challenge files:</p>
+            <code id="answer"><strong>wget https://challenge-files.picoctf.net/c_wily_courier/9597778734a3bb4ec711a6ac277146632eecda1ab82275d2e108ac8bc09b209d/dds2-alpine.flag.img.gz</strong></code><br><br>
+            <img class="solimage" src="../../images/DiskDiskSleuth2_img/download_img_file.png">
+            <p>
+                This downloads the file named <strong><i>dds2-alpine.flag.img.gz</i></strong> which is a gzip file. We need to unzip this file to get the disk image file.
+            </p>
+
+            <h3>Unzip the Challenge File</h3>
+            <p>I used the following command to unzip the gzip file:</p>
+            <code id="answer"><strong>gunzip dds2-alpine.flag.img.gz</strong></code>
+            <p>This command unzips the gzip file and saves the disk image file (.img) in the same directory.</p>
+            <img class="solimage" src="../../images/DiskDiskSleuth2_img/unzip_img_file.png">
+
+            <h3>View Disk Partition Table</h3>
+            <p>
+                Now that we have unzipped the gzip file, let's take a look at the disk's partition table to find out the main partition.<br><br>
+                I used the following command to view the given disk image's partition table:
+            </p>
+            <code id="answer"><strong>mmls dds2-alpine.flag.img</strong></code><br><br>
+            <img class="solimage" src="../../images/DiskDiskSleuth2_img/mmls_disk_img.png">
+            <p>
+                The third partition named <strong id="answer">Linux (0x83)</strong> is the largest partition. Also, given its name, it looks like the main partition.<br><br>
+                The Start value gives us the offset value for our main partition, which is <strong id="answer">2048</strong>
+            </p>
+
+            <h3>Exploring the Main Partition</h3>
+            <p>
+                Since we have assumed that the partition titled <i>Linux (0x83)</i> is the main partition, let's explore that partition further.<br><br>
+                I used the following command to view the contents of the main partition:
+            </p>
+            <code id="answer"><strong>fls -o 2048 dds2-alpine.flag.img</strong></code><br><br>
+            <img class="solimage" src="../../images/DiskDiskSleuth2_img/fls_root.png">
+            <p>
+                In the <i>fls</i> command, I have provided the offset value of the partition as <i>2048</i> as mentioned in the partition table.<br><br>
+                Since I did not provide any <i>inode number</i> in the argument, the <i>fls</i> tool uses the root directory of the partition.<br><br>
+                From the image above, we can clearly see that there are multiple directories like <i>etc, root, lib</i>, etc. which are standard Linux directories. Hence, this proves that our assumption was spot on, and the third partition is the main partition.
+            </p>
+
+            <h3>Find the Flag File</h3>
+            <p>
+                Now that we have confirmed that the partition we are viewing is indeed the main partition, we now need to find the file that has our flag.<br><br>
+                In the challenge description, we are told that the name of the file, where the flag is stored, is <i>down-at-the-bottom.txt</i>. <br><br>
+                I used the following command to search for the presence of such file to find its inode number:
+            </p>
+            <code id="answer"><strong>fls -r -o 2048 dds2-alpine.flag.img | grep "down-at-the-bottom.txt"</strong></code><br><br>
+            <img class="solimage" src="../../images/DiskDiskSleuth2_img/find_flag_file.png">
+            <p>
+                This command recursively traverses through each directory and file (due to the <i>-r</i> tag), and outputs the instance where the string <i>"down-at-the-bottom.txt"</i> is found.<br><br>
+                From the output shown in the image, we can see that the <i>inode number</i> of the target file is <strong id="answer">18291</strong>. We can use this inode number to output the contents of the file.
+            </p>
+
+            <h3>The Flag</h3>
+            <p>
+                Now that we have the inode number of the file <i>down-at-the-bottom.txt</i> which is <i>18291</i>, we can output the contents of the file using the <i>icat</i> tool as shown in the command below:
+            </p>
+            <code id="answer"><strong>icat -o 2048 dds2-alpine.flag.img 18291</strong></code><br><br>
+            <img class="solimage" src="../../images/DiskDiskSleuth2_img/flag.png">
+            <p>
+                This command outputs the contents of a single file based on its inode number in the specified partition.<br><br>
+                The image shows the contents of the flag file, and we have our flag.<br><br>
+                After combining the letters from the flag file, we get the flag value which is <strong id="answer">picoCTF{f0r3ns1c4t0r_n0v1c3_4bd721f2}</strong>.
+            </p>
+            
+        </section>
+    </div>
+</body>
