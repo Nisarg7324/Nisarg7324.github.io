@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>picoCTF 2022 - Operation Orchid - Writeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>picoCTF 2022 - Operation Orchid - Writeup</h1>
+            <a href="disk_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </header>
+        
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>
+                This writeup is for the <strong><i>Operation Orchid</i></strong> challenge which was part of the <strong><i>picoCTF 2022</i></strong> Capture The Flag (CTF) tournament.
+            </p>
+            <p>
+                Link to the challenge: <a href="https://play.picoctf.org/practice/challenge/285" target="_blank">Operation Orchid</a> (<strong>Note:</strong> Login required to view the challenge)
+            </p>
+        </section>
+        
+        <section id="challenge">
+            <h2>Challenge</h2>
+            <p>
+                The following is the challenge description:
+            </p>
+            <section id="challengedesc">
+                <p>
+                    Download the disk image and find the flag.<br><br>
+                    Note: if you are using the webshell, download and extract the disk image into <code>/tmp</code> not your home directory.<br><br>
+                    Attached file: disk.flag.img.gz
+                </p>
+            </section>
+        </section>
+        
+        <section id="toolsreq">
+            <h2>Tools Required</h2>
+            <p>
+                I used <strong>The Sleuth Kit</strong> tools along with other Linux command line utilities to complete this challenge. The following are The Sleuth Kit tools that I used in this challenge:
+                <ul>
+                    <li><strong>mmls</strong>: for viewing the disk partition information.</li>
+                    <li><strong>fls</strong>: for viewing the contents of the directories present in the disk image.</li>
+                    <li><strong>icat</strong>: for viewing the contents of the files in the disk image.</li>
+                </ul>
+                Additionally, picoCTF provides a webshell that I also used for this challenge.
+            </p>
+            <p>
+                I also used <strong>openssl</strong> for decrypting the flag file.
+            </p>
+        </section>
+
+        <section id="solution">
+            <h2>Solution</h2>
+            <p>Let's analyze the attached file to find the flag.</p>
+
+            <h3>Download the Challenge File</h3>
+            <p>
+                First, let's download the challenge file in the <code><strong>/tmp</strong></code> directory of our webshell session.
+            </p>
+            <p>
+                I used the following command to download the challenge file:
+            </p>
+            <code id="answer"><strong>wget https://artifacts.picoctf.net/c/214/disk.flag.img.gz</strong></code><br><br>
+            <img class="solimage" src="../../images/OperationOrchid_img/download_disk_img.png">
+            <p>
+                This downloads the file named <strong><i>disk.flag.img.gz</i></strong> which is a gzip file. We need to unzip this file to get the disk image file.
+            </p>
+
+            <h3>Unzip the Challenge File</h3>
+            <p>I used the following command to unzip the gzip file:</p>
+            <code id="answer"><strong>gunzip disk.flag.img.gz</strong></code><br><br>
+            <img class="solimage" src="../../images/OperationOrchid_img/unzip_disk_img.png">
+            
+            <h3>View the Partition Table</h3>
+            <p>
+                Now that we have unzipped the gzip file, let's take a look at the disk's partition table to find out the main partition.<br><br>
+                I used the following command to view the given disk image's partition table:
+            </p>
+            <code id="answer"><strong>mmls disk.flag.img</strong></code><br><br>
+            <img class="solimage" src="../../images/OperationOrchid_img/mmls_disk_img.png">
+            <p>
+                The fifth partition named <strong><i>Linux (0x83)</i></strong> is the largest partition. Also, given its name, it looks like it is the main partition.<br><br>
+                The Start value gives us our offset value for the main partition, which is <strong id="answer">411648</strong>. 
+            </p>
+
+            <h3>Exploring the Main Partition</h3>
+            <p>
+                Now that we have assumed that the fifth partition is the main partition, let's explore that partition further.<br><br>
+                I used the following command to view the contents of the main partition:
+            </p>
+            <code id="answer"><strong>fls -o 411648 disk.flag.img</strong></code><br><br>
+            <img class="solimage" src="../../images/OperationOrchid_img/fls_biggest_partition.png">
+            <p>
+                In the <i>fls</i> command, I have provided the offset value as <i>411648</i> as inferred from the partition table.<br><br>
+                Since I did not provide any inode number in the command's argument, the root directory of the partition is used.<br><br>
+                From the image above, we can clearly see that there are multiple directories like <i>etc, root, lib</i>, etc. which are standard Linux directories. Hence, this proves that our assumption was spot on, and the third partition is the main partition. 
+            </p>
+
+            <h3>Find the Flag File</h3>
+            <p>
+                Now that we have confirmed that the partition we are viewing is indeed the main partition, we now need to find the file that has our flag.<br><br>
+                The challenge description does not provide any information about the flag file. Hence, let's assume that the file containing the flag has the word <strong><i>flag</i></strong> in its title.<br><br>
+                Hence, let's search for a file that has the word "flag" in its title. I used the following command to do that:
+            </p>
+            <code id="answer"><strong>fls -rp -o 411648 disk.flag.img | grep "flag*"</strong></code>
+            <p>
+                This command recursively searches (due to the <i>-r</i> tag) the partition (that starts at offset 411648) and prints the full path of the files (due to the <i>-p</i> tag) that has the word "flag" in its title (due to the grep command).
+            </p>
+            <img class="solimage" src="../../images/OperationOrchid_img/find_flag_file.png">
+            <p>
+                From the output of the above command, we can see that the file <strong id="answer">flag.txt.enc</strong> is present in the <code><strong>/root</strong></code> directory.<br><br>
+                The inode number of the file is <strong id="answer">1782</strong>.<br><br>
+                However, the file has a <strong>.enc</strong> extension, which implies that the file is encrypted. We can also see that a file named <i>flag.txt</i> was deleted from the same directory, and the memory space has already been reallocated.<br><br>
+                Let's try to output the flag.txt.enc file first. I used the following command to do that:
+            </p>
+            <code id="answer"><strong>icat -o 411648 disk.flag.img 1782</strong></code>
+            <p>
+                This command outputs the contents of the file with the inode number 1782 (which is the inode number of flag.txt.enc file) present in the partition having the offset value of 411648.
+            </p>
+            <img class="solimage" src="../../images/OperationOrchid_img/output_enc_flag_file.png">
+            <p>
+                It is clear from the output that the file has been encrypted and is also using a salt value. Hence, we need to find out the encryption algorithm used and also the key value to decrypt this file.
+            </p>
+
+            <h3>Find Encryption Algorithm and Key to Decrypt the Flag File</h3>
+            <p>
+                Since the flag file is encrypted, we need to decrypt it. In order to decrypt the file, we need to find the encryption algorithm and the key used.<br><br>
+                Sometimes, due to mistake or lack of experience, users store key in the same directory as the encrypted file. Hence, let's explore the <code><strong>/root</strong></code> directory to find out any clues.<br><br>
+                Remember from the first time we viewed the contents of the partition, that the inode number of the root directory is <strong id="answer">472</strong>. I used the following command to view the contents of the root directory:
+            </p>
+            <code id="answer"><strong>fls -o 411648 disk.flag.img 472</strong></code>
+            <p>
+                This command lets us view the contents of the the directory having the inode number 472 (which is the inode number of the root directory).
+            </p>
+            <img class="solimage" src="../../images/OperationOrchid_img/fls_root_directory.png">
+            <p>
+                Unfortunately, there is no file storing the key used in encrypting the file in the root directory.<br><br>
+                However, we can see that there is a <strong id="answer">.ash_history</strong> file which is a file that stores command history. The inode number of this file is <strong id="answer">1875</strong>.<br><br>
+                The <i>.ash_history</i> file stores the command history which contains the commands used in the same (root) directory. We may get the actual command used in encrypting the flag.txt file by viewing the contents of the .ash_history file.<br><br>
+                I used the following command to output the contents of the .ash_history file: 
+            </p>
+            <code id="answer"><strong>icat -o 411648 disk.flag.img 1875</strong></code>
+            <p>
+                This command outputs the contents of the file having the inode number 1875 (.ash_history) present in the partition with the offset value of 411648.
+            </p>
+            <img class="solimage" src="../../images/OperationOrchid_img/icat_ash_history.png">
+            <p>
+                From the contents of the .ash_history file, we can clearly see that the user has used <strong id="answer">openssl</strong> to encrypt the flag.txt file using <strong id="answer">AES256</strong> algorithm and the key value of <strong id="answer">unbreakablepassword1234567</strong>.<br><br>
+                This shows us that providing the key value in the same command is a bad practice as it exposes the key value via the command history. Instead, openssl allows us to enter the key value later during its operation which is more secure way to enter the key value.<br><br>
+                Now that we have the exact command used to encrypt the flag.txt file, we just need to reverse it to decrypt the flag.txt.enc file.<br><br>
+                However, before we decrypt the flag.txt.enc file, we first need to download the file to our own system (webshell session in my case) to conduct any operation on it. This not only makes it easier to do operations on the file, it is also a good practice since it avoids mofification of the disk image and preserves its integrity.<br><br>
+                I used the following command to copy the flag.txt.enc file to my system:
+            </p>
+            <code id="answer"><strong>icat -o 411648 flag.txt.enc 1782 > flag.txt.enc</strong></code>
+            <p>
+                This command outputs the contents of the file, using the icat command, having the inode number 1782 (flag.txt.enc) present in the partition having the offset value of 411648; and stores the contents in the flag.txt.enc file in my system's current working directory (which is /tmp in my case).
+            </p>
+            <img class="solimage" src="../../images/OperationOrchid_img/save_flag_enc_to_our_sys.png">
+            <p>
+                Now that we have the flag.txt.enc file copied in our system, it is time to decrypt it. I used the following command to decrypt it:
+            </p>
+            <code id="answer"><strong>openssl aes256 -d -salt -in flag.txt.enc -out flag.txt -k unbreakablepassword1234567</strong></code>
+            <p>
+                This command decrypts (due to the <i>-d</i> tag) the input file (flag.txt.enc) using the AES256 algorithm with the key value (<i>-k</i> tag) of <i>unbreakablepassword1234567</i> which was used to create the salt (<i>-salt</i> tag); and stores the decrypted text in the output file (flag.txt).
+            </p>
+            <img class="solimage" src="../../images/OperationOrchid_img/decrypt_flag.png">
+            <p>
+                We received a warning saying that the deprecated key derivation is used. We can ignore this warning as the original encryption command did not use the latest secure key derivation either, and used the default deprecated version instead. Hence, during the decryption process, we should use the default version as well to successfully decrypt the text.
+            </p>
+
+            <h3>The Flag</h3>
+            <p>
+                Now that we have the decrypted flag.txt file, we can view the flag in the plaintext.
+            </p>
+            <code id="answer"><strong>cat flag.txt</strong></code>
+            <p>
+                This command outputs the contents of the flag.txt file.
+            </p>
+            <img class="solimage" src="../../images/OperationOrchid_img/flag.png">
+            <p>The flag value is <strong id="answer">picoCTF{h4un71ng_p457_1d02081e}</strong>.</p>
+        </section>
+
+        <footer>
+            <a href="disk_analysis.html" style="text-decoration: none;">&lt; Back</a>
+            &nbsp; &nbsp; &nbsp;
+            <a href="../../index.html" style="text-decoration: none;">⌂ Home</a>
+        </footer>
+    </div>
+</body>
