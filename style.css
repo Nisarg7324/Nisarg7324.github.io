@@ -184,7 +184,7 @@ h1, h2, h3, h4 {
 }
 
 .writeup {
-    border: 1px solid #ddd;
+    border: 0.1em solid #ddd;
     padding: 15px;
     border-radius: 5px;
     background-color: #f9f9f9;
@@ -192,7 +192,7 @@ h1, h2, h3, h4 {
 }
 
 .writeup:hover {
-    transform: scale(1.02); /* Slightly enlarge on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
 }
 
