@@ -230,6 +230,17 @@ footer {
     color: #777;
 }
 
+code {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
