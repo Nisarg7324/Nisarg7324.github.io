@@ -241,6 +241,12 @@ pre {
     word-wrap: break-word;
 }
 
+a {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
