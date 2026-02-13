@@ -241,7 +241,7 @@ pre {
     word-wrap: break-word;
 }
 
-a {
+p a {
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word;
